@@ -25,7 +25,7 @@ jobs:
       deletes: ${{ steps.parse.outputs.deletes }}
     env:
       STORYBLOK_API_TOKEN: ${{ secrets.STORYBLOK_API_TOKEN }}
-      STORYBLOK_SPACE_ID: ${{ secrets.STORYBLOK_SPACE_ID }}
+      STORYBLOK_SPACE_ID: ${{ vars.STORYBLOK_SPACE_ID }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -81,7 +81,7 @@ jobs:
     environment: production
     env:
       STORYBLOK_API_TOKEN: ${{ secrets.STORYBLOK_API_TOKEN }}
-      STORYBLOK_SPACE_ID: ${{ secrets.STORYBLOK_SPACE_ID }}
+      STORYBLOK_SPACE_ID: ${{ vars.STORYBLOK_SPACE_ID }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
