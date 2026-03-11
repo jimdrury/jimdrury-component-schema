@@ -31,6 +31,13 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile
 
+      - name: Check credentials
+        run: |
+          if [ -z "$STORYBLOK_API_TOKEN" ] || [ -z "$STORYBLOK_SPACE_ID" ]; then
+            echo "::error::STORYBLOK_API_TOKEN and STORYBLOK_SPACE_ID secrets must be configured"
+            exit 1
+          fi
+
       - name: Run plan
         run: |
           yarn plan 2>&1 | tee plan-raw.txt
