@@ -1,0 +1,49 @@
+{
+  "name": "jimdrury-component-schema",
+  "version": "1.0.0",
+  "description": "Storyblok components managed through source control",
+  "keywords": [
+    "storyblok",
+    "components",
+    "source control",
+    "sync"
+  ],
+  "homepage": "https://github.com/jimdrury/jimdrury-component-schema#readme",
+  "bugs": {
+    "url": "https://github.com/jimdrury/jimdrury-component-schema/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jimdrury/jimdrury-component-schema.git"
+  },
+  "license": "MIT",
+  "author": "Jim Drury",
+  "type": "module",
+  "scripts": {
+    "plan": "tsx src/cli.ts plan",
+    "apply": "tsx src/cli.ts apply",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepare": "lefthook install"
+  },
+  "dependencies": {
+    "axios": "^1.13.6",
+    "commander": "^14.0.3",
+    "dotenv": "^17.3.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.6",
+    "@commitlint/cli": "^20.4.3",
+    "@commitlint/config-conventional": "^20.4.3",
+    "@types/node": "^25.4.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "lefthook": "^2.1.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}

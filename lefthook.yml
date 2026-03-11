@@ -1,0 +1,35 @@
+pre-commit:
+  parallel: false
+  commands:
+    lint:
+      glob: "*.{ts,js}"
+      run: npx biome lint --write {staged_files} && git add {staged_files}
+    format:
+      glob: "*.{ts,js}"
+      run: npx biome format --write {staged_files} && git add {staged_files}
+
+commit-msg:
+  commands:
+    commitlint:
+      run: npx commitlint --edit {1}
+
+pre-push:
+  commands:
+    branch-naming:
+      run: |
+        branch=$(git rev-parse --abbrev-ref HEAD)
+        pattern='^(feature|fix|bugfix|hotfix|chore|docs|refactor|test|ci|release)/.+$'
+        allowed='^(main|develop)$'
+        if echo "$branch" | grep -qE "$allowed"; then
+          exit 0
+        fi
+        if ! echo "$branch" | grep -qE "$pattern"; then
+          echo ""
+          echo "Branch name '$branch' does not follow the naming convention."
+          echo ""
+          echo "Expected: type/name"
+          echo "  Types: feature, fix, bugfix, hotfix, chore, docs, refactor, test, ci, release"
+          echo "  Examples: feature/add-auth, fix/login-bug, chore/update-deps"
+          echo ""
+          exit 1
+        fi
