@@ -7,14 +7,23 @@ describe('tab', () => {
     const result = tab({
       name: 'config',
       display_name: 'Config',
-      fields: [text({ name: 'title' })],
+      fields: [
+        text({
+          name: 'title',
+        }),
+      ],
     });
 
     expect(result).toEqual({
       _tab: true,
       _tabName: 'config',
       display_name: 'Config',
-      _fields: [{ _name: 'title', type: 'text' }],
+      _fields: [
+        {
+          _name: 'title',
+          type: 'text',
+        },
+      ],
     });
   });
 
@@ -23,7 +32,11 @@ describe('tab', () => {
       tab({
         name: 'My Tab' as never,
         display_name: 'My Tab',
-        fields: [text({ name: 'title' })],
+        fields: [
+          text({
+            name: 'title',
+          }),
+        ],
       }),
     ).toThrow();
   });
@@ -43,7 +56,11 @@ describe('tab', () => {
       tab({
         name: 'config',
         display_name: 'Config',
-        fields: [{ invalid: true }] as never,
+        fields: [
+          {
+            invalid: true,
+          },
+        ] as never,
       }),
     ).toThrow();
   });
@@ -52,7 +69,14 @@ describe('tab', () => {
     const result = tab({
       name: 'seo',
       display_name: 'SEO',
-      fields: [text({ name: 'meta_title' }), text({ name: 'meta_description' })],
+      fields: [
+        text({
+          name: 'meta_title',
+        }),
+        text({
+          name: 'meta_description',
+        }),
+      ],
     });
 
     expect(result._fields).toHaveLength(2);

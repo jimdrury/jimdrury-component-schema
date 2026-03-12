@@ -8,8 +8,17 @@ type RemoteComponent = {
   [key: string]: unknown;
 };
 
-type RemoteFolder = { id: number; name: string; uuid: string; parent_id: number | null };
-type RemoteTag = { id: number; name: string; object_type: string };
+type RemoteFolder = {
+  id: number;
+  name: string;
+  uuid: string;
+  parent_id: number | null;
+};
+type RemoteTag = {
+  id: number;
+  name: string;
+  object_type: string;
+};
 
 export type FieldChange = {
   path: string;
@@ -48,7 +57,9 @@ function buildFolderPathMaps(folders: RemoteFolder[]) {
   }
 
   function buildPath(folder: RemoteFolder): string {
-    const parts: string[] = [folder.name];
+    const parts: string[] = [
+      folder.name,
+    ];
     let current = folder;
     while (current.parent_id !== null) {
       const parent = idToFolder.get(current.parent_id);
@@ -72,10 +83,16 @@ function buildFolderPathMaps(folders: RemoteFolder[]) {
     pathToFolder.set(p, f);
   }
 
-  return { pathToUuid, pathToId, pathToFolder };
+  return {
+    pathToUuid,
+    pathToId,
+    pathToFolder,
+  };
 }
 
-function getRequiredFolderPaths(components: ComponentDefinition[]): Set<string> {
+function getRequiredFolderPaths(
+  components: ComponentDefinition[],
+): Set<string> {
   const paths = new Set<string>();
   for (const component of components) {
     if (!component.folder) {
@@ -99,7 +116,10 @@ function getRequiredTagNames(components: ComponentDefinition[]): Set<string> {
     }
     for (const field of Object.values(component.schema)) {
       const f = field as Record<string, unknown>;
-      for (const key of ['_allowed_tags', '_disallowed_tags'] as const) {
+      for (const key of [
+        '_allowed_tags',
+        '_disallowed_tags',
+      ] as const) {
         if (f[key]) {
           for (const tag of f[key] as string[]) {
             names.add(tag);
@@ -113,7 +133,9 @@ function getRequiredTagNames(components: ComponentDefinition[]): Set<string> {
 
 // --- Diff logic ---
 
-const SCHEMA_IGNORED_KEYS = new Set(['pos']);
+const SCHEMA_IGNORED_KEYS = new Set([
+  'pos',
+]);
 
 const NUMERIC_ARRAY_FIELDS = new Set([
   'internal_tag_ids',
@@ -169,7 +191,10 @@ function deepEqual(a: unknown, b: unknown): boolean {
   if (typeof a === 'object' && typeof b === 'object') {
     const aObj = a as Record<string, unknown>;
     const bObj = b as Record<string, unknown>;
-    const keys = new Set([...Object.keys(aObj), ...Object.keys(bObj)]);
+    const keys = new Set([
+      ...Object.keys(aObj),
+      ...Object.keys(bObj),
+    ]);
     for (const key of keys) {
       if (!deepEqual(aObj[key], bObj[key])) {
         return false;
@@ -192,13 +217,19 @@ function diffSchemaFields(
 
   for (const name of localFields) {
     if (!remoteFields.has(name)) {
-      changes.push({ path: `schema.${name}`, type: 'added' });
+      changes.push({
+        path: `schema.${name}`,
+        type: 'added',
+      });
     }
   }
 
   for (const name of remoteFields) {
     if (!localFields.has(name)) {
-      changes.push({ path: `schema.${name}`, type: 'removed' });
+      changes.push({
+        path: `schema.${name}`,
+        type: 'removed',
+      });
     }
   }
 
@@ -257,9 +288,15 @@ export function diffComponent(
   if (desiredSchema && remoteSchema) {
     changes.push(...diffSchemaFields(desiredSchema, remoteSchema));
   } else if (desiredSchema && !remoteSchema) {
-    changes.push({ path: 'schema', type: 'added' });
+    changes.push({
+      path: 'schema',
+      type: 'added',
+    });
   } else if (!desiredSchema && remoteSchema) {
-    changes.push({ path: 'schema', type: 'removed' });
+    changes.push({
+      path: 'schema',
+      type: 'removed',
+    });
   }
 
   return changes;
@@ -272,14 +309,17 @@ export async function computePlan(
   const [componentsRes, foldersRes, tagsRes] = await Promise.all([
     api.getComponents(),
     api.getComponentFolders(),
-    api.getInternalTags({ by_object_type: 'component' }),
+    api.getInternalTags({
+      by_object_type: 'component',
+    }),
   ]);
 
   const remoteComponents: RemoteComponent[] = componentsRes.data.components;
   const remoteFolders: RemoteFolder[] = foldersRes.data.component_groups;
   const remoteTags: RemoteTag[] = tagsRes.data.internal_tags;
 
-  const { pathToUuid, pathToId, pathToFolder } = buildFolderPathMaps(remoteFolders);
+  const { pathToUuid, pathToId, pathToFolder } =
+    buildFolderPathMaps(remoteFolders);
 
   const tagNameToId = new Map<string, number>();
   for (const tag of remoteTags) {
@@ -291,12 +331,16 @@ export async function computePlan(
   // --- Folders ---
   const requiredFolders = getRequiredFolderPaths(localComponents);
 
-  const sortedRequired = [...requiredFolders].sort(
-    (a, b) => a.split('/').length - b.split('/').length,
-  );
+  const sortedRequired = [
+    ...requiredFolders,
+  ].sort((a, b) => a.split('/').length - b.split('/').length);
   for (const folderPath of sortedRequired) {
     if (!pathToUuid.has(folderPath)) {
-      actions.push({ action: 'create', resourceType: 'folder', name: folderPath });
+      actions.push({
+        action: 'create',
+        resourceType: 'folder',
+        name: folderPath,
+      });
       pathToUuid.set(folderPath, `pending:${folderPath}`);
     }
   }
@@ -318,7 +362,11 @@ export async function computePlan(
   let pendingTagId = -1;
   for (const name of requiredTags) {
     if (!tagNameToId.has(name)) {
-      actions.push({ action: 'create', resourceType: 'tag', name });
+      actions.push({
+        action: 'create',
+        resourceType: 'tag',
+        name,
+      });
       tagNameToId.set(name, pendingTagId--);
     }
   }
@@ -347,7 +395,11 @@ export async function computePlan(
         });
       }
     } else {
-      actions.push({ action: 'create', resourceType: 'component', name: local.name });
+      actions.push({
+        action: 'create',
+        resourceType: 'component',
+        name: local.name,
+      });
     }
   }
 

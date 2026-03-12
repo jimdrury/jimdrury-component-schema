@@ -1,9 +1,19 @@
 import z from 'zod';
 import { type BaseField, BaseFieldParamsSchema } from './base.interface';
 
-export type ComponentRef = { name: string };
+export type ComponentRef = {
+  name: string;
+};
 
-const componentRefSchema = z.array(z.object({ name: z.string() }).passthrough()).optional();
+const componentRefSchema = z
+  .array(
+    z
+      .object({
+        name: z.string(),
+      })
+      .passthrough(),
+  )
+  .optional();
 const stringArraySchema = z.array(z.string()).optional();
 
 export const BlocksParamsSchema = BaseFieldParamsSchema.extend({
@@ -50,7 +60,9 @@ type RestrictionTypes = {
   disallowed_tags: string[];
 };
 
-type ExclusiveRestriction<K extends RestrictionKeys> = { [P in K]: RestrictionTypes[P] } & {
+type ExclusiveRestriction<K extends RestrictionKeys> = {
+  [P in K]: RestrictionTypes[P];
+} & {
   [P in Exclude<RestrictionKeys, K>]?: never;
 };
 
@@ -59,7 +71,9 @@ type NoRestrictions = { [K in RestrictionKeys]?: never };
 type BlocksBaseParams<N extends string = string> = Omit<
   z.infer<typeof BlocksParamsSchema>,
   'name' | RestrictionKeys
-> & { name: N };
+> & {
+  name: N;
+};
 
 export type BlocksParams<N extends string = string> = BlocksBaseParams<N> &
   (

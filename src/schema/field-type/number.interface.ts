@@ -12,7 +12,9 @@ export const NumberParamsSchema = BaseFieldParamsSchema.extend({
 export type NumberParams<N extends string = string> = Omit<
   z.infer<typeof NumberParamsSchema>,
   'name'
-> & { name: N };
+> & {
+  name: N;
+};
 
 export type NumberField<N extends string = string> = BaseField<N> & {
   min_value?: number;

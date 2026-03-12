@@ -1,5 +1,9 @@
 import type { FieldType } from './field-type.interface';
-import { type NumberField, type NumberParams, NumberParamsSchema } from './number.interface';
+import {
+  type NumberField,
+  type NumberParams,
+  NumberParamsSchema,
+} from './number.interface';
 
 export const number = <const N extends string>(
   params: NumberParams<N>,

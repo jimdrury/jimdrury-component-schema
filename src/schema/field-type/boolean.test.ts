@@ -3,8 +3,13 @@ import { boolean } from './boolean';
 
 describe('boolean', () => {
   it('creates a boolean field with minimal params', () => {
-    const result = boolean({ name: 'is_active' });
-    expect(result).toEqual({ _name: 'is_active', type: 'boolean' });
+    const result = boolean({
+      name: 'is_active',
+    });
+    expect(result).toEqual({
+      _name: 'is_active',
+      type: 'boolean',
+    });
   });
 
   it('includes all optional params', () => {

@@ -1,4 +1,8 @@
-import { type BooleanField, type BooleanParams, BooleanParamsSchema } from './boolean.interface';
+import {
+  type BooleanField,
+  type BooleanParams,
+  BooleanParamsSchema,
+} from './boolean.interface';
 import type { FieldType } from './field-type.interface';
 
 export const boolean = <const N extends string>(

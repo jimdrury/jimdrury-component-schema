@@ -4,12 +4,24 @@ import { buildComponentPayload } from './payload';
 import type { Plan, PlanAction } from './plan';
 
 export type ApplyResult = {
-  succeeded: Array<{ action: PlanAction; id?: number }>;
-  failed: Array<{ action: PlanAction; error: unknown }>;
+  succeeded: Array<{
+    action: PlanAction;
+    id?: number;
+  }>;
+  failed: Array<{
+    action: PlanAction;
+    error: unknown;
+  }>;
 };
 
-export async function applyPlan(api: StoryblokApi, plan: Plan): Promise<ApplyResult> {
-  const result: ApplyResult = { succeeded: [], failed: [] };
+export async function applyPlan(
+  api: StoryblokApi,
+  plan: Plan,
+): Promise<ApplyResult> {
+  const result: ApplyResult = {
+    succeeded: [],
+    failed: [],
+  };
 
   const folderPathToUuid = new Map(plan.remoteState.folderPathToUuid);
   const folderPathToId = new Map(plan.remoteState.folderPathToId);
@@ -27,15 +39,23 @@ export async function applyPlan(api: StoryblokApi, plan: Plan): Promise<ApplyRes
 
       const res = await api.createComponentFolder({
         name: folderName,
-        ...(parentId !== undefined && { parent_id: parentId }),
+        ...(parentId !== undefined && {
+          parent_id: parentId,
+        }),
       });
 
       const created = res.data.component_group;
       folderPathToUuid.set(action.name, created.uuid);
       folderPathToId.set(action.name, created.id);
-      result.succeeded.push({ action, id: created.id });
+      result.succeeded.push({
+        action,
+        id: created.id,
+      });
     } catch (error) {
-      result.failed.push({ action, error });
+      result.failed.push({
+        action,
+        error,
+      });
     }
   }
 
@@ -44,11 +64,20 @@ export async function applyPlan(api: StoryblokApi, plan: Plan): Promise<ApplyRes
     (a) => a.resourceType === 'tag' && a.action === 'create',
   )) {
     try {
-      const res = await api.createInternalTag({ name: action.name, object_type: 'component' });
+      const res = await api.createInternalTag({
+        name: action.name,
+        object_type: 'component',
+      });
       tagNameToId.set(res.data.internal_tag.name, res.data.internal_tag.id);
-      result.succeeded.push({ action, id: res.data.internal_tag.id });
+      result.succeeded.push({
+        action,
+        id: res.data.internal_tag.id,
+      });
     } catch (error) {
-      result.failed.push({ action, error });
+      result.failed.push({
+        action,
+        error,
+      });
     }
   }
 
@@ -59,7 +88,9 @@ export async function applyPlan(api: StoryblokApi, plan: Plan): Promise<ApplyRes
   }
 
   for (const action of plan.actions.filter(
-    (a) => a.resourceType === 'component' && (a.action === 'create' || a.action === 'update'),
+    (a) =>
+      a.resourceType === 'component' &&
+      (a.action === 'create' || a.action === 'update'),
   )) {
     const component = localByName.get(action.name);
     if (!component) {
@@ -67,17 +98,33 @@ export async function applyPlan(api: StoryblokApi, plan: Plan): Promise<ApplyRes
     }
 
     try {
-      const payload = buildComponentPayload(component, folderPathToUuid, tagNameToId);
+      const payload = buildComponentPayload(
+        component,
+        folderPathToUuid,
+        tagNameToId,
+      );
 
       if (action.action === 'update' && action.remoteId !== undefined) {
-        const res = await api.updateComponent({ id: action.remoteId, ...payload });
-        result.succeeded.push({ action, id: res.data.component.id });
+        const res = await api.updateComponent({
+          id: action.remoteId,
+          ...payload,
+        });
+        result.succeeded.push({
+          action,
+          id: res.data.component.id,
+        });
       } else {
         const res = await api.createComponent(payload);
-        result.succeeded.push({ action, id: res.data.component.id });
+        result.succeeded.push({
+          action,
+          id: res.data.component.id,
+        });
       }
     } catch (error) {
-      result.failed.push({ action, error });
+      result.failed.push({
+        action,
+        error,
+      });
     }
   }
 
@@ -88,9 +135,14 @@ export async function applyPlan(api: StoryblokApi, plan: Plan): Promise<ApplyRes
     try {
       // biome-ignore lint/style/noNonNullAssertion: delete actions always have remoteId
       await api.deleteComponent(action.remoteId!);
-      result.succeeded.push({ action });
+      result.succeeded.push({
+        action,
+      });
     } catch (error) {
-      result.failed.push({ action, error });
+      result.failed.push({
+        action,
+        error,
+      });
     }
   }
 
@@ -103,9 +155,14 @@ export async function applyPlan(api: StoryblokApi, plan: Plan): Promise<ApplyRes
     try {
       // biome-ignore lint/style/noNonNullAssertion: delete actions always have remoteId
       await api.deleteComponentFolder(action.remoteId!);
-      result.succeeded.push({ action });
+      result.succeeded.push({
+        action,
+      });
     } catch (error) {
-      result.failed.push({ action, error });
+      result.failed.push({
+        action,
+        error,
+      });
     }
   }
 

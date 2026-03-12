@@ -9,7 +9,9 @@ export const MarkdownParamsSchema = BaseFieldParamsSchema.extend({
 export type MarkdownParams<N extends string = string> = Omit<
   z.infer<typeof MarkdownParamsSchema>,
   'name'
-> & { name: N };
+> & {
+  name: N;
+};
 
 export type Markdown<N extends string = string> = BaseField<N> & {
   max_length?: number;

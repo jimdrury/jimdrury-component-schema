@@ -2,7 +2,10 @@ import type { AnyFieldType } from './field-type.interface';
 import type { TabField, TabParams } from './tab.interface';
 import { TabParamsSchema } from './tab.interface';
 
-export const tab = <const N extends string, const Fields extends readonly AnyFieldType[]>(
+export const tab = <
+  const N extends string,
+  const Fields extends readonly AnyFieldType[],
+>(
   params: TabParams<N, Fields>,
 ): TabField<N, Fields> => {
   TabParamsSchema.parse(params);

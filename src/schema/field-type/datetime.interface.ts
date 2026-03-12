@@ -9,7 +9,9 @@ export const DatetimeParamsSchema = BaseFieldParamsSchema.extend({
 export type DatetimeParams<N extends string = string> = Omit<
   z.infer<typeof DatetimeParamsSchema>,
   'name'
-> & { name: N };
+> & {
+  name: N;
+};
 
 export type Datetime<N extends string = string> = BaseField<N> & {
   disable_time?: boolean;

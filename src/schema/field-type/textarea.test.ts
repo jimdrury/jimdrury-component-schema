@@ -3,8 +3,13 @@ import { textarea } from './textarea';
 
 describe('textarea', () => {
   it('creates a textarea field with minimal params', () => {
-    const result = textarea({ name: 'body' });
-    expect(result).toEqual({ _name: 'body', type: 'textarea' });
+    const result = textarea({
+      name: 'body',
+    });
+    expect(result).toEqual({
+      _name: 'body',
+      type: 'textarea',
+    });
   });
 
   it('includes all optional params', () => {
@@ -26,6 +31,10 @@ describe('textarea', () => {
   });
 
   it('rejects invalid names', () => {
-    expect(() => textarea({ name: 'Bad-Name' })).toThrow();
+    expect(() =>
+      textarea({
+        name: 'Bad-Name',
+      }),
+    ).toThrow();
   });
 });

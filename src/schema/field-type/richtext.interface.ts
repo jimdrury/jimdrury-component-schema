@@ -9,7 +9,9 @@ export const RichtextParamsSchema = BaseFieldParamsSchema.extend({
 export type RichtextParams<N extends string = string> = Omit<
   z.infer<typeof RichtextParamsSchema>,
   'name'
-> & { name: N };
+> & {
+  name: N;
+};
 
 export type Richtext<N extends string = string> = BaseField<N> & {
   max_length?: number;

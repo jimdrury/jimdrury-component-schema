@@ -3,8 +3,13 @@ import { datetime } from './datetime';
 
 describe('datetime', () => {
   it('creates a datetime field with minimal params', () => {
-    const result = datetime({ name: 'published_at' });
-    expect(result).toEqual({ _name: 'published_at', type: 'datetime' });
+    const result = datetime({
+      name: 'published_at',
+    });
+    expect(result).toEqual({
+      _name: 'published_at',
+      type: 'datetime',
+    });
   });
 
   it('includes all optional params', () => {

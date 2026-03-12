@@ -2,7 +2,10 @@ import z from 'zod';
 
 export const NameSchema = z
   .string()
-  .regex(/^[a-z_]+$/, 'name must only contain lowercase letters and underscores');
+  .regex(
+    /^[a-z_]+$/,
+    'name must only contain lowercase letters and underscores',
+  );
 
 export const BaseFieldParamsSchema = z.object({
   name: NameSchema,
@@ -25,12 +28,17 @@ export const TabEntrySchema = z.object({
   _fields: z.array(FieldTypeSchema).min(1),
 });
 
-export const SchemaEntrySchema = z.union([FieldTypeSchema, TabEntrySchema]);
+export const SchemaEntrySchema = z.union([
+  FieldTypeSchema,
+  TabEntrySchema,
+]);
 
 export type BaseFieldParams<N extends string = string> = Omit<
   z.infer<typeof BaseFieldParamsSchema>,
   'name'
-> & { name: N };
+> & {
+  name: N;
+};
 
 export type BaseField<N extends string = string> = {
   _name: N;

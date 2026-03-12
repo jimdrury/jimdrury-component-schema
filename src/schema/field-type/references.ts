@@ -8,7 +8,8 @@ import {
 export const references = <const N extends string>(
   params: ReferencesParams<N>,
 ): FieldType<References<N>> => {
-  const { name, filter_content_type, ...props } = ReferencesParamsSchema.parse(params);
+  const { name, filter_content_type, ...props } =
+    ReferencesParamsSchema.parse(params);
   return {
     _name: name as N,
     type: 'options',

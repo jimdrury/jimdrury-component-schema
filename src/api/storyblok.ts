@@ -63,18 +63,27 @@ export class StoryblokApi {
 
   getComponents(_params: GetComponentsParams = {}) {
     const validatedParams = GetComponentsSchema.parse(_params);
-    return this.client.get('/components', { params: validatedParams });
+    return this.client.get('/components', {
+      params: validatedParams,
+    });
   }
 
   createComponent(_params: CreateComponentParams) {
     const validatedParams = CreateComponentSchema.parse(_params);
-    return this.client.post('/components/', { component: validatedParams });
+    return this.client.post('/components/', {
+      component: validatedParams,
+    });
   }
 
   updateComponent(_params: UpdateComponentParams) {
     const validatedParams = UpdateComponentSchema.parse(_params);
     const { id, ...componentData } = validatedParams;
-    return this.client.put(`/components/${id}`, { component: { id, ...componentData } });
+    return this.client.put(`/components/${id}`, {
+      component: {
+        id,
+        ...componentData,
+      },
+    });
   }
 
   deleteComponent(componentId: number) {
@@ -85,7 +94,9 @@ export class StoryblokApi {
 
   getComponentFolders(_params: GetComponentFoldersParams = {}) {
     const validatedParams = GetComponentFoldersSchema.parse(_params);
-    return this.client.get('/component_groups/', { params: validatedParams });
+    return this.client.get('/component_groups/', {
+      params: validatedParams,
+    });
   }
 
   getComponentFolder(componentGroupId: number) {
@@ -94,13 +105,17 @@ export class StoryblokApi {
 
   createComponentFolder(_params: CreateComponentFolderParams) {
     const validatedParams = CreateComponentFolderSchema.parse(_params);
-    return this.client.post('/component_groups/', { component_group: validatedParams });
+    return this.client.post('/component_groups/', {
+      component_group: validatedParams,
+    });
   }
 
   updateComponentFolder(_params: UpdateComponentFolderParams) {
     const validatedParams = UpdateComponentFolderSchema.parse(_params);
     const { id, ...folderData } = validatedParams;
-    return this.client.put(`/component_groups/${id}`, { component_group: folderData });
+    return this.client.put(`/component_groups/${id}`, {
+      component_group: folderData,
+    });
   }
 
   deleteComponentFolder(componentGroupId: number) {
@@ -111,11 +126,15 @@ export class StoryblokApi {
 
   getInternalTags(_params: GetInternalTagsParams = {}) {
     const validatedParams = GetInternalTagsSchema.parse(_params);
-    return this.client.get('/internal_tags/', { params: validatedParams });
+    return this.client.get('/internal_tags/', {
+      params: validatedParams,
+    });
   }
 
   createInternalTag(_params: CreateInternalTagParams) {
     const validatedParams = CreateInternalTagSchema.parse(_params);
-    return this.client.post('/internal_tags/', { internal_tag: validatedParams });
+    return this.client.post('/internal_tags/', {
+      internal_tag: validatedParams,
+    });
   }
 }

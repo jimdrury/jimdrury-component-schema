@@ -10,7 +10,9 @@ export const MultiassetParamsSchema = BaseFieldParamsSchema.extend({
 export type MultiassetParams<N extends string = string> = Omit<
   z.infer<typeof MultiassetParamsSchema>,
   'name'
-> & { name: N };
+> & {
+  name: N;
+};
 
 export type Multiasset<N extends string = string> = BaseField<N> & {
   filetypes?: AssetFiletype[];

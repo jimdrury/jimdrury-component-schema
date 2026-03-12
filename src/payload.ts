@@ -14,7 +14,11 @@ function resolveFolderUuids(
   });
 }
 
-function resolveTagIds(names: string[], tagNameToId: Map<string, number>, label: string): number[] {
+function resolveTagIds(
+  names: string[],
+  tagNameToId: Map<string, number>,
+  label: string,
+): number[] {
   return names.map((name) => {
     const id = tagNameToId.get(name);
     if (!id) {
@@ -36,7 +40,8 @@ export function resolveSchemaRestrictions(
 
     if (field._allowed_folders || field._disallowed_folders) {
       const isAllow = Boolean(field._allowed_folders);
-      const paths = (field._allowed_folders ?? field._disallowed_folders) as string[];
+      const paths = (field._allowed_folders ??
+        field._disallowed_folders) as string[];
       const { _allowed_folders, _disallowed_folders, ...rest } = field;
       const uuids = resolveFolderUuids(
         paths,
@@ -58,7 +63,11 @@ export function resolveSchemaRestrictions(
       const isAllow = Boolean(field._allowed_tags);
       const names = (field._allowed_tags ?? field._disallowed_tags) as string[];
       const { _allowed_tags, _disallowed_tags, ...rest } = field;
-      const ids = resolveTagIds(names, tagNameToId, isAllow ? 'allowed_tags' : 'disallowed_tags');
+      const ids = resolveTagIds(
+        names,
+        tagNameToId,
+        isAllow ? 'allowed_tags' : 'disallowed_tags',
+      );
       resolved[key] = {
         ...rest,
         restrict_type: 'tags',
@@ -84,8 +93,14 @@ export function buildComponentPayload(
   tagNameToId: Map<string, number>,
 ) {
   const { folder, tags, ...componentData } = component;
-  const component_group_uuid = folder ? folderPathToUuid.get(folder) : undefined;
-  const schema = resolveSchemaRestrictions(componentData.schema, folderPathToUuid, tagNameToId);
+  const component_group_uuid = folder
+    ? folderPathToUuid.get(folder)
+    : undefined;
+  const schema = resolveSchemaRestrictions(
+    componentData.schema,
+    folderPathToUuid,
+    tagNameToId,
+  );
   const internal_tag_ids = tags?.map((name) => {
     const id = tagNameToId.get(name);
     if (!id) {
@@ -97,7 +112,11 @@ export function buildComponentPayload(
   return {
     ...componentData,
     schema,
-    ...(component_group_uuid !== undefined && { component_group_uuid }),
-    ...(internal_tag_ids !== undefined && { internal_tag_ids }),
+    ...(component_group_uuid !== undefined && {
+      component_group_uuid,
+    }),
+    ...(internal_tag_ids !== undefined && {
+      internal_tag_ids,
+    }),
   };
 }

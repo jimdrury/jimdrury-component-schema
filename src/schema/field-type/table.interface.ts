@@ -6,6 +6,8 @@ export const TableParamsSchema = BaseFieldParamsSchema.extend({});
 export type TableParams<N extends string = string> = Omit<
   z.infer<typeof TableParamsSchema>,
   'name'
-> & { name: N };
+> & {
+  name: N;
+};
 
 export type Table<N extends string = string> = BaseField<N>;

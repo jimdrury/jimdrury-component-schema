@@ -1,7 +1,13 @@
 import z from 'zod';
 import { type BaseField, BaseFieldParamsSchema } from './base.interface';
 
-const componentRefSchema = z.array(z.object({ name: z.string() }).passthrough());
+const componentRefSchema = z.array(
+  z
+    .object({
+      name: z.string(),
+    })
+    .passthrough(),
+);
 
 export const MultilinkParamsSchema = BaseFieldParamsSchema.extend({
   email_link_type: z.boolean().optional(),
@@ -16,7 +22,9 @@ export const MultilinkParamsSchema = BaseFieldParamsSchema.extend({
 export type MultilinkParams<N extends string = string> = Omit<
   z.infer<typeof MultilinkParamsSchema>,
   'name'
-> & { name: N };
+> & {
+  name: N;
+};
 
 export type Multilink<N extends string = string> = BaseField<N> & {
   email_link_type?: boolean;
