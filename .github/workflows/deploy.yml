@@ -15,6 +15,20 @@ permissions:
   contents: write
 
 jobs:
+  lint-test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
+      - name: Run tests
+        run: yarn test
+
   plan:
     name: Plan
     runs-on: ubuntu-latest
@@ -27,8 +41,8 @@ jobs:
       STORYBLOK_API_TOKEN: ${{ secrets.STORYBLOK_API_TOKEN }}
       STORYBLOK_SPACE_ID: ${{ vars.STORYBLOK_SPACE_ID }}
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: yarn
@@ -66,14 +80,14 @@ jobs:
 
       - name: Upload plan output
         if: steps.parse.outputs.has_changes == 'true'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: plan-output
           path: plan-output.txt
 
   apply:
     name: Apply
-    needs: plan
+    needs: [lint-test, plan]
     if: needs.plan.outputs.has_changes == 'true'
     runs-on: ubuntu-latest
     # Requires a "production" environment with required reviewers configured
@@ -83,8 +97,8 @@ jobs:
       STORYBLOK_API_TOKEN: ${{ secrets.STORYBLOK_API_TOKEN }}
       STORYBLOK_SPACE_ID: ${{ vars.STORYBLOK_SPACE_ID }}
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: yarn
@@ -96,12 +110,12 @@ jobs:
     needs: [plan, apply]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Download plan output
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: plan-output
 

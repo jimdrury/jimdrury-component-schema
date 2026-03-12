@@ -20,8 +20,8 @@ jobs:
     name: Lint & Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: yarn
@@ -46,8 +46,8 @@ jobs:
       STORYBLOK_API_TOKEN: ${{ secrets.STORYBLOK_API_TOKEN }}
       STORYBLOK_SPACE_ID: ${{ vars.STORYBLOK_SPACE_ID }}
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: yarn
@@ -99,3 +99,20 @@ jobs:
         with:
           header: storyblok-plan
           path: comment.md
+
+  apply:
+    name: Apply
+    needs: [lint-test, plan]
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      STORYBLOK_API_TOKEN: ${{ secrets.STORYBLOK_API_TOKEN }}
+      STORYBLOK_SPACE_ID: ${{ vars.STORYBLOK_SPACE_ID }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn apply
