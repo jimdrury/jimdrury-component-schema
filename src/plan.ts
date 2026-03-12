@@ -297,6 +297,7 @@ export async function computePlan(
   for (const folderPath of sortedRequired) {
     if (!pathToUuid.has(folderPath)) {
       actions.push({ action: 'create', resourceType: 'folder', name: folderPath });
+      pathToUuid.set(folderPath, `pending:${folderPath}`);
     }
   }
 
@@ -314,9 +315,11 @@ export async function computePlan(
   // --- Tags ---
   const requiredTags = getRequiredTagNames(localComponents);
 
+  let pendingTagId = -1;
   for (const name of requiredTags) {
     if (!tagNameToId.has(name)) {
       actions.push({ action: 'create', resourceType: 'tag', name });
+      tagNameToId.set(name, pendingTagId--);
     }
   }
 
@@ -331,13 +334,8 @@ export async function computePlan(
   for (const local of localComponents) {
     const remote = remoteByName.get(local.name);
     if (remote) {
-      let changes: FieldChange[];
-      try {
-        const desired = buildComponentPayload(local, pathToUuid, tagNameToId);
-        changes = diffComponent(desired as Record<string, unknown>, remote);
-      } catch {
-        changes = [{ path: '*', type: 'changed' }];
-      }
+      const desired = buildComponentPayload(local, pathToUuid, tagNameToId);
+      const changes = diffComponent(desired as Record<string, unknown>, remote);
 
       if (changes.length > 0) {
         actions.push({

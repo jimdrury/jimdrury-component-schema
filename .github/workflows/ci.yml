@@ -41,7 +41,6 @@ jobs:
 
   plan:
     name: Plan
-    needs: lint-test
     runs-on: ubuntu-latest
     env:
       STORYBLOK_API_TOKEN: ${{ secrets.STORYBLOK_API_TOKEN }}
