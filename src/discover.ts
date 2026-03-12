@@ -13,13 +13,25 @@ export type ComponentDefinition = {
   tags?: string[];
 };
 
+function collectTsFiles(dir: string): string[] {
+  const results: string[] = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      results.push(...collectTsFiles(fullPath));
+    } else if (entry.name.endsWith('.ts')) {
+      results.push(fullPath);
+    }
+  }
+  return results;
+}
+
 export async function discoverComponents(componentsDir: string): Promise<ComponentDefinition[]> {
-  const files = fs.readdirSync(componentsDir).filter((f) => f.endsWith('.ts'));
+  const files = collectTsFiles(componentsDir);
   const components: ComponentDefinition[] = [];
 
   for (const file of files) {
-    const modulePath = path.resolve(componentsDir, file);
-    const mod = await import(modulePath);
+    const mod = await import(file);
     components.push(mod.default);
   }
 
