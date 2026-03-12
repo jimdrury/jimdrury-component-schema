@@ -3,8 +3,13 @@ import { multilink } from './multilink';
 
 describe('multilink', () => {
   it('creates a multilink field with minimal params', () => {
-    const result = multilink({ name: 'link' });
-    expect(result).toEqual({ _name: 'link', type: 'multilink' });
+    const result = multilink({
+      name: 'link',
+    });
+    expect(result).toEqual({
+      _name: 'link',
+      type: 'multilink',
+    });
   });
 
   it('includes all optional params', () => {
@@ -32,18 +37,30 @@ describe('multilink', () => {
   it('transforms allowed_content_types into restrict_content_types and component_whitelist', () => {
     const result = multilink({
       name: 'link',
-      allowed_content_types: [{ name: 'page' }, { name: 'blog' }],
+      allowed_content_types: [
+        {
+          name: 'page',
+        },
+        {
+          name: 'blog',
+        },
+      ],
     });
     expect(result).toEqual({
       _name: 'link',
       type: 'multilink',
       restrict_content_types: true,
-      component_whitelist: ['page', 'blog'],
+      component_whitelist: [
+        'page',
+        'blog',
+      ],
     });
   });
 
   it('does not include restrict_content_types when allowed_content_types is not provided', () => {
-    const result = multilink({ name: 'link' });
+    const result = multilink({
+      name: 'link',
+    });
     expect(result).not.toHaveProperty('restrict_content_types');
     expect(result).not.toHaveProperty('component_whitelist');
   });

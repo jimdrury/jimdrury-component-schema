@@ -1,6 +1,9 @@
 import type { SchemaEntry } from '../field-type/field-type.interface';
 import { buildSchema } from './_build-schema';
-import { type ContentTypeParams, ContentTypeParamsSchema } from './content-type.interface';
+import {
+  type ContentTypeParams,
+  ContentTypeParamsSchema,
+} from './content-type.interface';
 
 export const contentType = <const Schema extends readonly SchemaEntry[]>(
   params: ContentTypeParams<Schema>,

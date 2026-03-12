@@ -1,5 +1,9 @@
 import type { FieldType } from './field-type.interface';
-import { type Markdown, type MarkdownParams, MarkdownParamsSchema } from './markdown.interface';
+import {
+  type Markdown,
+  type MarkdownParams,
+  MarkdownParamsSchema,
+} from './markdown.interface';
 
 export const markdown = <const N extends string>(
   params: MarkdownParams<N>,

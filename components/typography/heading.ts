@@ -6,6 +6,9 @@ export default nestable({
   display_name: 'Heading',
   folder: 'typography',
   schema: [
-    text({ name: 'text', required: true }),
+    text({
+      name: 'text',
+      required: true,
+    }),
   ],
 });

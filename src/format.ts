@@ -63,7 +63,9 @@ function formatAction(action: PlanAction): string {
       ? `${DIM}id: ${action.remoteId}${RESET}`
       : `${DIM}(known after apply)${RESET}`;
 
-  const lines = [`  ${symbol} ${verb} ${type} ${name}  ${id}`];
+  const lines = [
+    `  ${symbol} ${verb} ${type} ${name}  ${id}`,
+  ];
 
   if (action.changes && action.changes.length > 0) {
     for (const change of action.changes) {
@@ -83,21 +85,37 @@ export function formatPlan(plan: Plan): string {
 
   if (plan.actions.length === 0) {
     lines.push('');
-    lines.push(`${GREEN}No changes.${RESET} Your Storyblok space matches the local configuration.`);
+    lines.push(
+      `${GREEN}No changes.${RESET} Your Storyblok space matches the local configuration.`,
+    );
     lines.push('');
     return lines.join('\n');
   }
 
   lines.push('');
 
-  const groups: Array<{ label: string; resourceType: PlanAction['resourceType'] }> = [
-    { label: 'Folder changes', resourceType: 'folder' },
-    { label: 'Tag changes', resourceType: 'tag' },
-    { label: 'Component changes', resourceType: 'component' },
+  const groups: Array<{
+    label: string;
+    resourceType: PlanAction['resourceType'];
+  }> = [
+    {
+      label: 'Folder changes',
+      resourceType: 'folder',
+    },
+    {
+      label: 'Tag changes',
+      resourceType: 'tag',
+    },
+    {
+      label: 'Component changes',
+      resourceType: 'component',
+    },
   ];
 
   for (const { label, resourceType } of groups) {
-    const groupActions = plan.actions.filter((a) => a.resourceType === resourceType);
+    const groupActions = plan.actions.filter(
+      (a) => a.resourceType === resourceType,
+    );
     if (groupActions.length === 0) {
       continue;
     }
@@ -125,8 +143,14 @@ export function formatApplyResult(result: ApplyResult): string {
     const color = ACTION_COLORS[action.action];
     const idStr = id !== undefined ? ` ${DIM}(id: ${id})${RESET}` : '';
     const past =
-      action.action === 'create' ? 'created' : action.action === 'update' ? 'updated' : 'deleted';
-    lines.push(`  ${color}✓${RESET} ${past} ${action.resourceType} "${action.name}"${idStr}`);
+      action.action === 'create'
+        ? 'created'
+        : action.action === 'update'
+          ? 'updated'
+          : 'deleted';
+    lines.push(
+      `  ${color}✓${RESET} ${past} ${action.resourceType} "${action.name}"${idStr}`,
+    );
   }
 
   for (const { action, error } of result.failed) {

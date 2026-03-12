@@ -56,14 +56,18 @@ export const GetComponentFoldersSchema = z.object({
   with_parent: z.string().optional(),
 });
 
-export type GetComponentFoldersParams = z.infer<typeof GetComponentFoldersSchema>;
+export type GetComponentFoldersParams = z.infer<
+  typeof GetComponentFoldersSchema
+>;
 
 export const CreateComponentFolderSchema = z.object({
   name: z.string(),
   parent_id: z.number().optional(),
 });
 
-export type CreateComponentFolderParams = z.infer<typeof CreateComponentFolderSchema>;
+export type CreateComponentFolderParams = z.infer<
+  typeof CreateComponentFolderSchema
+>;
 
 export const UpdateComponentFolderSchema = z.object({
   id: z.number(),
@@ -71,7 +75,9 @@ export const UpdateComponentFolderSchema = z.object({
   parent_id: z.number().optional(),
 });
 
-export type UpdateComponentFolderParams = z.infer<typeof UpdateComponentFolderSchema>;
+export type UpdateComponentFolderParams = z.infer<
+  typeof UpdateComponentFolderSchema
+>;
 
 // Internal Tags
 

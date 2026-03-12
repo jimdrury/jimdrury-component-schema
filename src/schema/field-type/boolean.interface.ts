@@ -9,7 +9,9 @@ export const BooleanParamsSchema = BaseFieldParamsSchema.extend({
 export type BooleanParams<N extends string = string> = Omit<
   z.infer<typeof BooleanParamsSchema>,
   'name'
-> & { name: N };
+> & {
+  name: N;
+};
 
 export type BooleanField<N extends string = string> = BaseField<N> & {
   default_value?: boolean;

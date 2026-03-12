@@ -8,7 +8,9 @@ export default contentType({
   schema: [
     blocks({
       name: 'body',
-      allowed_folders: ['layouts'],
+      allowed_folders: [
+        'layouts',
+      ],
     }),
   ],
 });

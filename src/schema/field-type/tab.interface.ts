@@ -5,7 +5,9 @@ import type { AnyFieldType } from './field-type.interface';
 export const TabParamsSchema = z.object({
   name: NameSchema,
   display_name: z.string(),
-  fields: z.array(FieldTypeSchema).min(1, 'A tab must contain at least one field'),
+  fields: z
+    .array(FieldTypeSchema)
+    .min(1, 'A tab must contain at least one field'),
 });
 
 export type TabParams<

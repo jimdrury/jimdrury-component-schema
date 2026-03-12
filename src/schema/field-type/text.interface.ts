@@ -11,7 +11,9 @@ export const TextParamsSchema = BaseFieldParamsSchema.extend({
 export type TextParams<N extends string = string> = Omit<
   z.infer<typeof TextParamsSchema>,
   'name'
-> & { name: N };
+> & {
+  name: N;
+};
 
 export type Text<N extends string = string> = BaseField<N> & {
   translatable?: boolean;

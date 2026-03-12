@@ -9,7 +9,11 @@ describe('contentType', () => {
     const result = contentType({
       name: 'page',
       display_name: 'Page',
-      schema: [text({ name: 'title' })],
+      schema: [
+        text({
+          name: 'title',
+        }),
+      ],
     });
 
     expect(result).toEqual({
@@ -20,7 +24,9 @@ describe('contentType', () => {
       folder: undefined,
       tags: undefined,
       schema: {
-        title: { type: 'text' },
+        title: {
+          type: 'text',
+        },
       },
       is_root: true,
     });
@@ -39,12 +45,25 @@ describe('contentType', () => {
     const result = contentType({
       name: 'blog',
       display_name: 'Blog',
-      schema: [text({ name: 'title', required: true }), richtext({ name: 'content' })],
+      schema: [
+        text({
+          name: 'title',
+          required: true,
+        }),
+        richtext({
+          name: 'content',
+        }),
+      ],
     });
 
     expect(result.schema).toEqual({
-      title: { type: 'text', required: true },
-      content: { type: 'richtext' },
+      title: {
+        type: 'text',
+        required: true,
+      },
+      content: {
+        type: 'richtext',
+      },
     });
   });
 
@@ -55,8 +74,14 @@ describe('contentType', () => {
       image: 'https://example.com/icon.png',
       preview_field: 'title',
       folder: 'content',
-      tags: ['content'],
-      schema: [text({ name: 'title' })],
+      tags: [
+        'content',
+      ],
+      schema: [
+        text({
+          name: 'title',
+        }),
+      ],
     });
 
     expect(result.name).toBe('blog');
@@ -64,7 +89,9 @@ describe('contentType', () => {
     expect(result.image).toBe('https://example.com/icon.png');
     expect(result.preview_field).toBe('title');
     expect(result.folder).toBe('content');
-    expect(result.tags).toEqual(['content']);
+    expect(result.tags).toEqual([
+      'content',
+    ]);
   });
 
   it('rejects invalid names', () => {
@@ -82,7 +109,11 @@ describe('contentType', () => {
       contentType({
         name: 'page',
         display_name: 'Page',
-        schema: [{ invalid: true } as never],
+        schema: [
+          {
+            invalid: true,
+          } as never,
+        ],
       }),
     ).toThrow();
   });
@@ -92,23 +123,41 @@ describe('contentType', () => {
       name: 'page',
       display_name: 'Page',
       schema: [
-        richtext({ name: 'body' }),
+        richtext({
+          name: 'body',
+        }),
         tab({
           name: 'seo',
           display_name: 'SEO',
-          fields: [text({ name: 'meta_title' }), text({ name: 'meta_description' })],
+          fields: [
+            text({
+              name: 'meta_title',
+            }),
+            text({
+              name: 'meta_description',
+            }),
+          ],
         }),
       ],
     });
 
     expect(result.schema).toEqual({
-      body: { type: 'richtext' },
-      meta_title: { type: 'text' },
-      meta_description: { type: 'text' },
+      body: {
+        type: 'richtext',
+      },
+      meta_title: {
+        type: 'text',
+      },
+      meta_description: {
+        type: 'text',
+      },
       tab_seo: {
         type: 'tab',
         display_name: 'SEO',
-        keys: ['meta_title', 'meta_description'],
+        keys: [
+          'meta_title',
+          'meta_description',
+        ],
       },
     });
   });
@@ -118,26 +167,54 @@ describe('contentType', () => {
       name: 'page',
       display_name: 'Page',
       schema: [
-        text({ name: 'title' }),
+        text({
+          name: 'title',
+        }),
         tab({
           name: 'seo',
           display_name: 'SEO',
-          fields: [text({ name: 'meta_title' })],
+          fields: [
+            text({
+              name: 'meta_title',
+            }),
+          ],
         }),
         tab({
           name: 'config',
           display_name: 'Config',
-          fields: [text({ name: 'slug' })],
+          fields: [
+            text({
+              name: 'slug',
+            }),
+          ],
         }),
       ],
     });
 
     expect(result.schema).toEqual({
-      title: { type: 'text' },
-      meta_title: { type: 'text' },
-      tab_seo: { type: 'tab', display_name: 'SEO', keys: ['meta_title'] },
-      slug: { type: 'text' },
-      tab_config: { type: 'tab', display_name: 'Config', keys: ['slug'] },
+      title: {
+        type: 'text',
+      },
+      meta_title: {
+        type: 'text',
+      },
+      tab_seo: {
+        type: 'tab',
+        display_name: 'SEO',
+        keys: [
+          'meta_title',
+        ],
+      },
+      slug: {
+        type: 'text',
+      },
+      tab_config: {
+        type: 'tab',
+        display_name: 'Config',
+        keys: [
+          'slug',
+        ],
+      },
     });
   });
 });

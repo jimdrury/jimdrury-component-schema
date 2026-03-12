@@ -1,10 +1,15 @@
 import type { FieldType } from './field-type.interface';
-import { type Multilink, type MultilinkParams, MultilinkParamsSchema } from './multilink.interface';
+import {
+  type Multilink,
+  type MultilinkParams,
+  MultilinkParamsSchema,
+} from './multilink.interface';
 
 export const multilink = <const N extends string>(
   params: MultilinkParams<N>,
 ): FieldType<Multilink<N>> => {
-  const { name, allowed_content_types, ...props } = MultilinkParamsSchema.parse(params);
+  const { name, allowed_content_types, ...props } =
+    MultilinkParamsSchema.parse(params);
   return {
     _name: name as N,
     type: 'multilink',

@@ -6,6 +6,11 @@ export default nestable({
   display_name: 'Section',
   folder: 'layouts',
   schema: [
-    blocks({ name: 'body',allowed_folders: ['typography'] }),
+    blocks({
+      name: 'body',
+      allowed_folders: [
+        'typography',
+      ],
+    }),
   ],
 });

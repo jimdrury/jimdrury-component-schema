@@ -3,11 +3,25 @@ import type { StoryblokApi } from './api/storyblok';
 import type { ComponentDefinition } from './discover';
 import { computePlan, diffComponent } from './plan';
 
-function createMockApi(overrides: Partial<Record<keyof StoryblokApi, unknown>> = {}): StoryblokApi {
+function createMockApi(
+  overrides: Partial<Record<keyof StoryblokApi, unknown>> = {},
+): StoryblokApi {
   return {
-    getComponents: vi.fn().mockResolvedValue({ data: { components: [] } }),
-    getComponentFolders: vi.fn().mockResolvedValue({ data: { component_groups: [] } }),
-    getInternalTags: vi.fn().mockResolvedValue({ data: { internal_tags: [] } }),
+    getComponents: vi.fn().mockResolvedValue({
+      data: {
+        components: [],
+      },
+    }),
+    getComponentFolders: vi.fn().mockResolvedValue({
+      data: {
+        component_groups: [],
+      },
+    }),
+    getInternalTags: vi.fn().mockResolvedValue({
+      data: {
+        internal_tags: [],
+      },
+    }),
     createComponent: vi.fn(),
     updateComponent: vi.fn(),
     deleteComponent: vi.fn(),
@@ -20,8 +34,14 @@ function createMockApi(overrides: Partial<Record<keyof StoryblokApi, unknown>> =
   } as unknown as StoryblokApi;
 }
 
-function makeComponent(overrides: Partial<ComponentDefinition> = {}): ComponentDefinition {
-  return { name: 'test', schema: {}, ...overrides };
+function makeComponent(
+  overrides: Partial<ComponentDefinition> = {},
+): ComponentDefinition {
+  return {
+    name: 'test',
+    schema: {},
+    ...overrides,
+  };
 }
 
 describe('computePlan', () => {
@@ -38,7 +58,11 @@ describe('computePlan', () => {
 
   it('marks a local component as create when it does not exist remotely', async () => {
     const api = createMockApi();
-    const plan = await computePlan(api, [makeComponent({ name: 'hero' })]);
+    const plan = await computePlan(api, [
+      makeComponent({
+        name: 'hero',
+      }),
+    ]);
 
     expect(plan.actions).toContainEqual({
       action: 'create',
@@ -52,17 +76,36 @@ describe('computePlan', () => {
       getComponents: vi.fn().mockResolvedValue({
         data: {
           components: [
-            { name: 'hero', id: 10, schema: { title: { type: 'text' } }, is_root: false },
+            {
+              name: 'hero',
+              id: 10,
+              schema: {
+                title: {
+                  type: 'text',
+                },
+              },
+              is_root: false,
+            },
           ],
         },
       }),
     });
 
     const plan = await computePlan(api, [
-      makeComponent({ name: 'hero', schema: { title: { type: 'text', required: true } } }),
+      makeComponent({
+        name: 'hero',
+        schema: {
+          title: {
+            type: 'text',
+            required: true,
+          },
+        },
+      }),
     ]);
 
-    const action = plan.actions.find((a) => a.resourceType === 'component' && a.name === 'hero');
+    const action = plan.actions.find(
+      (a) => a.resourceType === 'component' && a.name === 'hero',
+    );
     expect(action).toBeDefined();
     expect(action?.action).toBe('update');
     expect(action?.remoteId).toBe(10);
@@ -78,7 +121,11 @@ describe('computePlan', () => {
             {
               name: 'hero',
               id: 10,
-              schema: { title: { type: 'text' } },
+              schema: {
+                title: {
+                  type: 'text',
+                },
+              },
               is_root: false,
               display_name: 'Hero',
             },
@@ -90,7 +137,11 @@ describe('computePlan', () => {
     const plan = await computePlan(api, [
       makeComponent({
         name: 'hero',
-        schema: { title: { type: 'text' } },
+        schema: {
+          title: {
+            type: 'text',
+          },
+        },
         is_root: false,
         display_name: 'Hero',
       }),
@@ -110,7 +161,16 @@ describe('computePlan', () => {
             {
               name: 'hero',
               id: 10,
-              schema: { title: { type: 'text', pos: 0 }, body: { type: 'richtext', pos: 1 } },
+              schema: {
+                title: {
+                  type: 'text',
+                  pos: 0,
+                },
+                body: {
+                  type: 'richtext',
+                  pos: 1,
+                },
+              },
             },
           ],
         },
@@ -120,7 +180,14 @@ describe('computePlan', () => {
     const plan = await computePlan(api, [
       makeComponent({
         name: 'hero',
-        schema: { title: { type: 'text' }, body: { type: 'richtext' } },
+        schema: {
+          title: {
+            type: 'text',
+          },
+          body: {
+            type: 'richtext',
+          },
+        },
       }),
     ]);
 
@@ -133,7 +200,14 @@ describe('computePlan', () => {
   it('marks a remote component as delete when it does not exist locally', async () => {
     const api = createMockApi({
       getComponents: vi.fn().mockResolvedValue({
-        data: { components: [{ name: 'orphan', id: 99 }] },
+        data: {
+          components: [
+            {
+              name: 'orphan',
+              id: 99,
+            },
+          ],
+        },
       }),
     });
 
@@ -152,30 +226,67 @@ describe('computePlan', () => {
       getComponents: vi.fn().mockResolvedValue({
         data: {
           components: [
-            { name: 'existing', id: 1, schema: { old_field: { type: 'text' } } },
-            { name: 'stale', id: 2 },
+            {
+              name: 'existing',
+              id: 1,
+              schema: {
+                old_field: {
+                  type: 'text',
+                },
+              },
+            },
+            {
+              name: 'stale',
+              id: 2,
+            },
           ],
         },
       }),
     });
 
     const plan = await computePlan(api, [
-      makeComponent({ name: 'existing', schema: { new_field: { type: 'text' } } }),
-      makeComponent({ name: 'brand_new' }),
+      makeComponent({
+        name: 'existing',
+        schema: {
+          new_field: {
+            type: 'text',
+          },
+        },
+      }),
+      makeComponent({
+        name: 'brand_new',
+      }),
     ]);
 
     const names = plan.actions
       .filter((a) => a.resourceType === 'component')
-      .map((a) => ({ action: a.action, name: a.name }));
+      .map((a) => ({
+        action: a.action,
+        name: a.name,
+      }));
 
-    expect(names).toContainEqual({ action: 'update', name: 'existing' });
-    expect(names).toContainEqual({ action: 'create', name: 'brand_new' });
-    expect(names).toContainEqual({ action: 'delete', name: 'stale' });
+    expect(names).toContainEqual({
+      action: 'update',
+      name: 'existing',
+    });
+    expect(names).toContainEqual({
+      action: 'create',
+      name: 'brand_new',
+    });
+    expect(names).toContainEqual({
+      action: 'delete',
+      name: 'stale',
+    });
   });
 
   it('plans folder creation when a local component references a missing folder', async () => {
     const api = createMockApi();
-    const plan = await computePlan(api, [makeComponent({ name: 'blog', folder: 'content' })]);
+    const plan = await computePlan(api, [
+      makeComponent({
+        name: 'blog',
+        folder: 'content',
+      }),
+    ]);
 
     expect(plan.actions).toContainEqual({
       action: 'create',
@@ -188,12 +299,24 @@ describe('computePlan', () => {
     const api = createMockApi({
       getComponentFolders: vi.fn().mockResolvedValue({
         data: {
-          component_groups: [{ id: 1, name: 'content', uuid: 'c-uuid', parent_id: null }],
+          component_groups: [
+            {
+              id: 1,
+              name: 'content',
+              uuid: 'c-uuid',
+              parent_id: null,
+            },
+          ],
         },
       }),
     });
 
-    const plan = await computePlan(api, [makeComponent({ name: 'blog', folder: 'content' })]);
+    const plan = await computePlan(api, [
+      makeComponent({
+        name: 'blog',
+        folder: 'content',
+      }),
+    ]);
 
     const folderCreates = plan.actions.filter(
       (a) => a.resourceType === 'folder' && a.action === 'create',
@@ -205,7 +328,14 @@ describe('computePlan', () => {
     const api = createMockApi({
       getComponentFolders: vi.fn().mockResolvedValue({
         data: {
-          component_groups: [{ id: 5, name: 'legacy', uuid: 'l-uuid', parent_id: null }],
+          component_groups: [
+            {
+              id: 5,
+              name: 'legacy',
+              uuid: 'l-uuid',
+              parent_id: null,
+            },
+          ],
         },
       }),
     });
@@ -222,18 +352,33 @@ describe('computePlan', () => {
 
   it('plans nested folder paths as individual create actions', async () => {
     const api = createMockApi();
-    const plan = await computePlan(api, [makeComponent({ name: 'widget', folder: 'layout/grid' })]);
+    const plan = await computePlan(api, [
+      makeComponent({
+        name: 'widget',
+        folder: 'layout/grid',
+      }),
+    ]);
 
     const folderCreates = plan.actions
       .filter((a) => a.resourceType === 'folder' && a.action === 'create')
       .map((a) => a.name);
 
-    expect(folderCreates).toEqual(['layout', 'layout/grid']);
+    expect(folderCreates).toEqual([
+      'layout',
+      'layout/grid',
+    ]);
   });
 
   it('plans tag creation when a local component references a missing tag', async () => {
     const api = createMockApi();
-    const plan = await computePlan(api, [makeComponent({ name: 'grid', tags: ['layout'] })]);
+    const plan = await computePlan(api, [
+      makeComponent({
+        name: 'grid',
+        tags: [
+          'layout',
+        ],
+      }),
+    ]);
 
     expect(plan.actions).toContainEqual({
       action: 'create',
@@ -245,11 +390,26 @@ describe('computePlan', () => {
   it('does not plan tag creation when the tag exists remotely', async () => {
     const api = createMockApi({
       getInternalTags: vi.fn().mockResolvedValue({
-        data: { internal_tags: [{ id: 3, name: 'layout', object_type: 'component' }] },
+        data: {
+          internal_tags: [
+            {
+              id: 3,
+              name: 'layout',
+              object_type: 'component',
+            },
+          ],
+        },
       }),
     });
 
-    const plan = await computePlan(api, [makeComponent({ name: 'grid', tags: ['layout'] })]);
+    const plan = await computePlan(api, [
+      makeComponent({
+        name: 'grid',
+        tags: [
+          'layout',
+        ],
+      }),
+    ]);
 
     const tagCreates = plan.actions.filter(
       (a) => a.resourceType === 'tag' && a.action === 'create',
@@ -264,8 +424,18 @@ describe('computePlan', () => {
       makeComponent({
         name: 'page',
         schema: {
-          body: { type: 'bloks', _allowed_tags: ['ui'] },
-          sidebar: { type: 'bloks', _disallowed_tags: ['internal'] },
+          body: {
+            type: 'bloks',
+            _allowed_tags: [
+              'ui',
+            ],
+          },
+          sidebar: {
+            type: 'bloks',
+            _disallowed_tags: [
+              'internal',
+            ],
+          },
         },
       }),
     ]);
@@ -281,21 +451,58 @@ describe('computePlan', () => {
   it('preserves localComponents and remoteState on the plan', async () => {
     const api = createMockApi({
       getComponents: vi.fn().mockResolvedValue({
-        data: { components: [{ name: 'hero', id: 1 }] },
+        data: {
+          components: [
+            {
+              name: 'hero',
+              id: 1,
+            },
+          ],
+        },
       }),
       getComponentFolders: vi.fn().mockResolvedValue({
-        data: { component_groups: [{ id: 2, name: 'ui', uuid: 'u', parent_id: null }] },
+        data: {
+          component_groups: [
+            {
+              id: 2,
+              name: 'ui',
+              uuid: 'u',
+              parent_id: null,
+            },
+          ],
+        },
       }),
       getInternalTags: vi.fn().mockResolvedValue({
-        data: { internal_tags: [{ id: 3, name: 'layout', object_type: 'component' }] },
+        data: {
+          internal_tags: [
+            {
+              id: 3,
+              name: 'layout',
+              object_type: 'component',
+            },
+          ],
+        },
       }),
     });
 
-    const local = [makeComponent({ name: 'hero', folder: 'ui', tags: ['layout'] })];
+    const local = [
+      makeComponent({
+        name: 'hero',
+        folder: 'ui',
+        tags: [
+          'layout',
+        ],
+      }),
+    ];
     const plan = await computePlan(api, local);
 
     expect(plan.localComponents).toBe(local);
-    expect(plan.remoteState.components).toEqual([{ name: 'hero', id: 1 }]);
+    expect(plan.remoteState.components).toEqual([
+      {
+        name: 'hero',
+        id: 1,
+      },
+    ]);
     expect(plan.remoteState.folderPathToUuid.get('ui')).toBe('u');
     expect(plan.remoteState.tagNameToId.get('layout')).toBe(3);
   });
@@ -307,14 +514,23 @@ describe('diffComponent', () => {
       name: 'hero',
       display_name: 'Hero',
       is_root: true,
-      schema: { title: { type: 'text' } },
+      schema: {
+        title: {
+          type: 'text',
+        },
+      },
     };
     const remote = {
       name: 'hero',
       id: 10,
       display_name: 'Hero',
       is_root: true,
-      schema: { title: { type: 'text', pos: 0 } },
+      schema: {
+        title: {
+          type: 'text',
+          pos: 0,
+        },
+      },
       created_at: '2024-01-01',
     };
 
@@ -322,8 +538,17 @@ describe('diffComponent', () => {
   });
 
   it('detects changed top-level field', () => {
-    const desired = { name: 'hero', display_name: 'New Hero', schema: {} };
-    const remote = { name: 'hero', id: 10, display_name: 'Old Hero', schema: {} };
+    const desired = {
+      name: 'hero',
+      display_name: 'New Hero',
+      schema: {},
+    };
+    const remote = {
+      name: 'hero',
+      id: 10,
+      display_name: 'Old Hero',
+      schema: {},
+    };
 
     const changes = diffComponent(desired, remote);
     expect(changes).toContainEqual({
@@ -337,29 +562,81 @@ describe('diffComponent', () => {
   it('detects added schema field', () => {
     const desired = {
       name: 'hero',
-      schema: { title: { type: 'text' }, body: { type: 'richtext' } },
+      schema: {
+        title: {
+          type: 'text',
+        },
+        body: {
+          type: 'richtext',
+        },
+      },
     };
-    const remote = { name: 'hero', id: 10, schema: { title: { type: 'text' } } };
-
-    const changes = diffComponent(desired, remote);
-    expect(changes).toContainEqual({ path: 'schema.body', type: 'added' });
-  });
-
-  it('detects removed schema field', () => {
-    const desired = { name: 'hero', schema: { title: { type: 'text' } } };
     const remote = {
       name: 'hero',
       id: 10,
-      schema: { title: { type: 'text' }, old: { type: 'text' } },
+      schema: {
+        title: {
+          type: 'text',
+        },
+      },
     };
 
     const changes = diffComponent(desired, remote);
-    expect(changes).toContainEqual({ path: 'schema.old', type: 'removed' });
+    expect(changes).toContainEqual({
+      path: 'schema.body',
+      type: 'added',
+    });
+  });
+
+  it('detects removed schema field', () => {
+    const desired = {
+      name: 'hero',
+      schema: {
+        title: {
+          type: 'text',
+        },
+      },
+    };
+    const remote = {
+      name: 'hero',
+      id: 10,
+      schema: {
+        title: {
+          type: 'text',
+        },
+        old: {
+          type: 'text',
+        },
+      },
+    };
+
+    const changes = diffComponent(desired, remote);
+    expect(changes).toContainEqual({
+      path: 'schema.old',
+      type: 'removed',
+    });
   });
 
   it('detects changed schema field property', () => {
-    const desired = { name: 'hero', schema: { title: { type: 'text', required: true } } };
-    const remote = { name: 'hero', id: 10, schema: { title: { type: 'text', required: false } } };
+    const desired = {
+      name: 'hero',
+      schema: {
+        title: {
+          type: 'text',
+          required: true,
+        },
+      },
+    };
+    const remote = {
+      name: 'hero',
+      id: 10,
+      schema: {
+        title: {
+          type: 'text',
+          required: false,
+        },
+      },
+    };
 
     const changes = diffComponent(desired, remote);
     expect(changes).toContainEqual({
@@ -371,28 +648,72 @@ describe('diffComponent', () => {
   });
 
   it('ignores pos in remote schema fields', () => {
-    const desired = { name: 'hero', schema: { title: { type: 'text' } } };
-    const remote = { name: 'hero', id: 10, schema: { title: { type: 'text', pos: 0 } } };
+    const desired = {
+      name: 'hero',
+      schema: {
+        title: {
+          type: 'text',
+        },
+      },
+    };
+    const remote = {
+      name: 'hero',
+      id: 10,
+      schema: {
+        title: {
+          type: 'text',
+          pos: 0,
+        },
+      },
+    };
 
     expect(diffComponent(desired, remote)).toEqual([]);
   });
 
   it('compares internal_tag_ids', () => {
-    const desired = { name: 'hero', internal_tag_ids: [1, 2], schema: {} };
-    const remote = { name: 'hero', id: 10, internal_tag_ids: [1], schema: {} };
+    const desired = {
+      name: 'hero',
+      internal_tag_ids: [
+        1,
+        2,
+      ],
+      schema: {},
+    };
+    const remote = {
+      name: 'hero',
+      id: 10,
+      internal_tag_ids: [
+        1,
+      ],
+      schema: {},
+    };
 
     const changes = diffComponent(desired, remote);
     expect(changes).toContainEqual({
       path: 'internal_tag_ids',
       type: 'changed',
-      local: [1, 2],
-      remote: [1],
+      local: [
+        1,
+        2,
+      ],
+      remote: [
+        1,
+      ],
     });
   });
 
   it('compares component_group_uuid', () => {
-    const desired = { name: 'hero', component_group_uuid: 'new-uuid', schema: {} };
-    const remote = { name: 'hero', id: 10, component_group_uuid: 'old-uuid', schema: {} };
+    const desired = {
+      name: 'hero',
+      component_group_uuid: 'new-uuid',
+      schema: {},
+    };
+    const remote = {
+      name: 'hero',
+      id: 10,
+      component_group_uuid: 'old-uuid',
+      schema: {},
+    };
 
     const changes = diffComponent(desired, remote);
     expect(changes).toContainEqual({
@@ -404,8 +725,21 @@ describe('diffComponent', () => {
   });
 
   it('normalizes string IDs from Storyblok to numbers before comparing', () => {
-    const desired = { name: 'hero', internal_tag_ids: [123], schema: {} };
-    const remote = { name: 'hero', id: 10, internal_tag_ids: ['123'], schema: {} };
+    const desired = {
+      name: 'hero',
+      internal_tag_ids: [
+        123,
+      ],
+      schema: {},
+    };
+    const remote = {
+      name: 'hero',
+      id: 10,
+      internal_tag_ids: [
+        '123',
+      ],
+      schema: {},
+    };
 
     expect(diffComponent(desired, remote)).toEqual([]);
   });
@@ -417,7 +751,9 @@ describe('diffComponent', () => {
         body: {
           type: 'bloks',
           restrict_type: 'tags',
-          component_tag_whitelist: [10],
+          component_tag_whitelist: [
+            10,
+          ],
           component_tag_denylist: [],
         },
       },
@@ -429,7 +765,9 @@ describe('diffComponent', () => {
         body: {
           type: 'bloks',
           restrict_type: 'tags',
-          component_tag_whitelist: ['10'],
+          component_tag_whitelist: [
+            '10',
+          ],
           component_tag_denylist: [],
         },
       },
@@ -439,8 +777,17 @@ describe('diffComponent', () => {
   });
 
   it('skips fields not in the desired payload', () => {
-    const desired = { name: 'hero', schema: {} };
-    const remote = { name: 'hero', id: 10, display_name: 'Hero', is_root: true, schema: {} };
+    const desired = {
+      name: 'hero',
+      schema: {},
+    };
+    const remote = {
+      name: 'hero',
+      id: 10,
+      display_name: 'Hero',
+      is_root: true,
+      schema: {},
+    };
 
     expect(diffComponent(desired, remote)).toEqual([]);
   });

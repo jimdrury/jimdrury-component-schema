@@ -1,8 +1,14 @@
-import type { AnyFieldType, SchemaEntry } from '../field-type/field-type.interface';
+import type {
+  AnyFieldType,
+  SchemaEntry,
+} from '../field-type/field-type.interface';
 
-function isTabEntry(
-  entry: SchemaEntry,
-): entry is { _tab: true; _tabName: string; display_name: string; _fields: AnyFieldType[] } {
+function isTabEntry(entry: SchemaEntry): entry is {
+  _tab: true;
+  _tabName: string;
+  display_name: string;
+  _fields: AnyFieldType[];
+} {
   return '_tab' in entry && entry._tab === true;
 }
 

@@ -3,8 +3,13 @@ import { number } from './number';
 
 describe('number', () => {
   it('creates a number field with minimal params', () => {
-    const result = number({ name: 'count' });
-    expect(result).toEqual({ _name: 'count', type: 'number' });
+    const result = number({
+      name: 'count',
+    });
+    expect(result).toEqual({
+      _name: 'count',
+      type: 'number',
+    });
   });
 
   it('includes all optional params', () => {

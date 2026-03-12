@@ -8,7 +8,15 @@ export const OptionsParamsSchema = BaseFieldParamsSchema.extend({
   min_options: z.number().optional(),
   max_options: z.number().optional(),
   use_uuid: z.boolean().optional(),
-  source: z.enum(['internal', 'external', 'internal_stories', 'internal_languages', '']).optional(),
+  source: z
+    .enum([
+      'internal',
+      'external',
+      'internal_stories',
+      'internal_languages',
+      '',
+    ])
+    .optional(),
   datasource_slug: z.string().optional(),
   external_datasource: z.string().optional(),
   filter_content_type: z.array(z.string()).optional(),
@@ -18,7 +26,9 @@ export const OptionsParamsSchema = BaseFieldParamsSchema.extend({
 export type OptionsParams<N extends string = string> = Omit<
   z.infer<typeof OptionsParamsSchema>,
   'name'
-> & { name: N };
+> & {
+  name: N;
+};
 
 export type Options<N extends string = string> = BaseField<N> & {
   options: OptionItem[];
@@ -26,7 +36,12 @@ export type Options<N extends string = string> = BaseField<N> & {
   min_options?: number;
   max_options?: number;
   use_uuid?: boolean;
-  source?: 'internal' | 'external' | 'internal_stories' | 'internal_languages' | '';
+  source?:
+    | 'internal'
+    | 'external'
+    | 'internal_stories'
+    | 'internal_languages'
+    | '';
   datasource_slug?: string;
   external_datasource?: string;
   filter_content_type?: string[];

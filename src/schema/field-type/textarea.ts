@@ -1,5 +1,9 @@
 import type { FieldType } from './field-type.interface';
-import { type Textarea, type TextareaParams, TextareaParamsSchema } from './textarea.interface';
+import {
+  type Textarea,
+  type TextareaParams,
+  TextareaParamsSchema,
+} from './textarea.interface';
 
 export const textarea = <const N extends string>(
   params: TextareaParams<N>,

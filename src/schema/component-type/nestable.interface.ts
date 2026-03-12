@@ -13,7 +13,9 @@ export const NestableParamsSchema = z.object({
   schema: z.array(SchemaEntrySchema),
 });
 
-export type NestableParams<Schema extends readonly SchemaEntry[] = SchemaEntry[]> = {
+export type NestableParams<
+  Schema extends readonly SchemaEntry[] = SchemaEntry[],
+> = {
   name: string;
   display_name: string;
   image?: string;

@@ -13,7 +13,9 @@ export const ContentTypeParamsSchema = z.object({
   schema: z.array(SchemaEntrySchema),
 });
 
-export type ContentTypeParams<Schema extends readonly SchemaEntry[] = SchemaEntry[]> = {
+export type ContentTypeParams<
+  Schema extends readonly SchemaEntry[] = SchemaEntry[],
+> = {
   name: string;
   display_name: string;
   image?: string;

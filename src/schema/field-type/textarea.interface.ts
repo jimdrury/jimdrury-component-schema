@@ -9,7 +9,9 @@ export const TextareaParamsSchema = BaseFieldParamsSchema.extend({
 export type TextareaParams<N extends string = string> = Omit<
   z.infer<typeof TextareaParamsSchema>,
   'name'
-> & { name: N };
+> & {
+  name: N;
+};
 
 export type Textarea<N extends string = string> = BaseField<N> & {
   default_value?: string;

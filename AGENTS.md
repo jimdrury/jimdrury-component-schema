@@ -64,6 +64,7 @@ The `_name` internal property carries the field key through the type system; `bu
 
 ### Code style (Biome)
 
-- Single quotes, semicolons, trailing commas, 2-space indent, 100-char line width.
+- Single quotes, semicolons, trailing commas, 2-space indent, 80-char line width.
+- Objects and arrays always expand to multiple lines (`expand: "always"`).
 - `import type` required for type-only imports (`useImportType: error`).
 - Node built-ins must use the `node:` protocol.

@@ -3,8 +3,13 @@ import { richtext } from './richtext';
 
 describe('richtext', () => {
   it('creates a richtext field with minimal params', () => {
-    const result = richtext({ name: 'content' });
-    expect(result).toEqual({ _name: 'content', type: 'richtext' });
+    const result = richtext({
+      name: 'content',
+    });
+    expect(result).toEqual({
+      _name: 'content',
+      type: 'richtext',
+    });
   });
 
   it('includes all optional params', () => {

@@ -15,7 +15,9 @@ export type ComponentDefinition = {
 
 function collectTsFiles(dir: string): string[] {
   const results: string[] = [];
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+  for (const entry of fs.readdirSync(dir, {
+    withFileTypes: true,
+  })) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       results.push(...collectTsFiles(fullPath));
@@ -26,7 +28,9 @@ function collectTsFiles(dir: string): string[] {
   return results;
 }
 
-export async function discoverComponents(componentsDir: string): Promise<ComponentDefinition[]> {
+export async function discoverComponents(
+  componentsDir: string,
+): Promise<ComponentDefinition[]> {
   const files = collectTsFiles(componentsDir);
   const components: ComponentDefinition[] = [];
 

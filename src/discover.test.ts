@@ -9,11 +9,19 @@ vi.mock('node:fs', () => ({
 }));
 
 function fileDirent(name: string): fs.Dirent {
-  return { name, isDirectory: () => false, isFile: () => true } as unknown as fs.Dirent;
+  return {
+    name,
+    isDirectory: () => false,
+    isFile: () => true,
+  } as unknown as fs.Dirent;
 }
 
 function dirDirent(name: string): fs.Dirent {
-  return { name, isDirectory: () => true, isFile: () => false } as unknown as fs.Dirent;
+  return {
+    name,
+    isDirectory: () => true,
+    isFile: () => false,
+  } as unknown as fs.Dirent;
 }
 
 describe('discoverComponents', () => {
@@ -40,18 +48,24 @@ describe('discoverComponents', () => {
   it('calls readdirSync with withFileTypes on the given directory', async () => {
     vi.mocked(fs.readdirSync).mockReturnValue([] as never);
     await discoverComponents('/some/path');
-    expect(fs.readdirSync).toHaveBeenCalledWith('/some/path', { withFileTypes: true });
+    expect(fs.readdirSync).toHaveBeenCalledWith('/some/path', {
+      withFileTypes: true,
+    });
   });
 
   it('recurses into subdirectories', async () => {
     vi.mocked(fs.readdirSync).mockImplementation(((dir: string) => {
       if (dir === '/tmp/components') {
-        return [dirDirent('layouts')] as never;
+        return [
+          dirDirent('layouts'),
+        ] as never;
       }
       return [] as never;
     }) as typeof fs.readdirSync);
 
     await discoverComponents('/tmp/components');
-    expect(fs.readdirSync).toHaveBeenCalledWith('/tmp/components/layouts', { withFileTypes: true });
+    expect(fs.readdirSync).toHaveBeenCalledWith('/tmp/components/layouts', {
+      withFileTypes: true,
+    });
   });
 });
