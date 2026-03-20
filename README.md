@@ -2,9 +2,43 @@
 
 A TypeScript DSL and CLI for managing Storyblok components as code.
 
+## Installation
+
+This package is published to the [GitHub Package Registry](https://github.com/jimdrury/jimdrury-component-schema/packages), not npm. You need to tell your package manager where to find `@jimdrury` scoped packages.
+
+### npm / Yarn 1
+
+Add a `.npmrc` to your project root:
+
+```
+@jimdrury:registry=https://npm.pkg.github.com
+```
+
+Then install:
+
 ```bash
 npm install @jimdrury/storyblok-component-schema
+# or
+yarn add @jimdrury/storyblok-component-schema
 ```
+
+### Yarn 2+ (Berry)
+
+Add to your `.yarnrc.yml`:
+
+```yaml
+npmScopes:
+  jimdrury:
+    npmRegistryServer: https://npm.pkg.github.com
+```
+
+Then install:
+
+```bash
+yarn add @jimdrury/storyblok-component-schema
+```
+
+## Usage
 
 Define components as plain `.ts` files, then use the CLI to preview and apply changes to your Storyblok space:
 

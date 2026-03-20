@@ -48,6 +48,6 @@ jobs:
         run: yarn build
 
       - name: Publish @jimdrury/storyblok-component-schema
-        run: npm publish --access restricted 2>&1 || echo "Already published or publish failed"
+        run: npm publish --access public 2>&1 || echo "Already published or publish failed"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
