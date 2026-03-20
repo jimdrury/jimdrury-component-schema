@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.3.0](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.2.0...storyblok-component-schema-v0.3.0) (2026-03-20)
+
+
+### Features
+
+* add .component-schema.yaml config file support ([95a48ba](https://github.com/jimdrury/jimdrury-component-schema/commit/95a48bac4a897b8f1b5765f2d421d108c0608afd))
+* add .component-schema.yaml config file support ([6f2f816](https://github.com/jimdrury/jimdrury-component-schema/commit/6f2f816c08291aedc715d22a673f2dbd6c4cd8b1))
+* add install skill and fix dotenv loading order ([38c3fba](https://github.com/jimdrury/jimdrury-component-schema/commit/38c3fbaef20282db2909685490ebfbf052741cd6))
+* use tsx for self-contained TypeScript loading in CLI ([907c584](https://github.com/jimdrury/jimdrury-component-schema/commit/907c584edbc31c410e9cde9b908090084fcb8800))
+
+
+### Bug Fixes
+
+* suppress MODULE_TYPELESS_PACKAGE_JSON warning in CLI ([bd61ac9](https://github.com/jimdrury/jimdrury-component-schema/commit/bd61ac9a261834745f393ba947a1d504b9eed300))
+
 ## [0.2.0](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.1.0...storyblok-component-schema-v0.2.0) (2026-03-20)
 
 
