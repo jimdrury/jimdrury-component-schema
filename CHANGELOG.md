@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.5](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.4...storyblok-component-schema-v0.4.5) (2026-03-20)
+
+
+### Documentation
+
+* add skill files for all schema function types ([#21](https://github.com/jimdrury/jimdrury-component-schema/issues/21)) ([89758f2](https://github.com/jimdrury/jimdrury-component-schema/commit/89758f2f8ca797098ddcbb7271e74f72aa8a6194))
+
+
+### Miscellaneous
+
+* add Claude Code plugin marketplace manifest ([#22](https://github.com/jimdrury/jimdrury-component-schema/issues/22)) ([c84bf7f](https://github.com/jimdrury/jimdrury-component-schema/commit/c84bf7fca5b177ae99abce6743514a63a61baa90))
+
+
+### CI
+
+* include docs and chore commits in releases ([#23](https://github.com/jimdrury/jimdrury-component-schema/issues/23)) ([dbaf655](https://github.com/jimdrury/jimdrury-component-schema/commit/dbaf655dc1eba3029cbdaf2616684b48f357f524))
+
 ## [0.4.4](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.3...storyblok-component-schema-v0.4.4) (2026-03-20)
 
 
