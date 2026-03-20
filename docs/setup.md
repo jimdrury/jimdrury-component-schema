@@ -1,16 +1,47 @@
 # Setup
 
-## Quick start
+## Installation
+
+This package is published to the GitHub Package Registry. Point your package manager at it before installing.
+
+### npm / Yarn 1
+
+Add a `.npmrc` to your project root:
+
+```
+@jimdrury:registry=https://npm.pkg.github.com
+```
+
+### Yarn 2+ (Berry)
+
+Add to your `.yarnrc.yml`:
+
+```yaml
+npmScopes:
+  jimdrury:
+    npmRegistryServer: https://npm.pkg.github.com
+```
+
+### Install
 
 ```bash
-# Install dependencies
-yarn install
+npm install @jimdrury/storyblok-component-schema
+# or
+yarn add @jimdrury/storyblok-component-schema
+```
 
-# Preview what would change in your Storyblok space
-yarn plan
+### GitHub Actions
 
-# Apply changes
-yarn apply
+In CI, use `actions/setup-node` to configure the registry:
+
+```yaml
+- uses: actions/setup-node@v6
+  with:
+    registry-url: https://npm.pkg.github.com
+    scope: '@jimdrury'
+- run: yarn install
+  env:
+    NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ---
@@ -30,9 +61,9 @@ Both values are required. The API token must have write access to the space.
 
 ## Commands
 
-### `yarn plan`
+### `npx storyblok-component-schema plan`
 
-Compares local component definitions against the current state of your Storyblok space and outputs a plan of what would change. Nothing is modified — this is a read-only preview.
+Compares local component definitions against the current state of your Storyblok space and outputs a plan of what would change. Nothing is modified -- this is a read-only preview.
 
 ```
 Discovered 4 local component(s)
@@ -55,9 +86,11 @@ Plan: 2 to create, 1 to update, 1 to delete.
 |--------|---------|
 | `+` | Resource will be **created** in Storyblok. ID is not yet known. |
 | `~` | Resource exists remotely and will be **updated** in-place. |
-| `-` | Resource exists in Storyblok but **not** locally — it will be **deleted**. |
+| `-` | Resource exists in Storyblok but **not** locally -- it will be **deleted**. |
 
-### `yarn apply`
+By default the CLI looks for components in `./components`. Use `--dir <path>` to override.
+
+### `npx storyblok-component-schema apply`
 
 Runs the same plan, then executes all changes against the Storyblok Management API. Changes are applied in dependency order:
 
@@ -67,4 +100,4 @@ Runs the same plan, then executes all changes against the Storyblok Management A
 4. **Delete** orphaned components.
 5. **Delete** orphaned folders (deepest first).
 
-This repo is the **only source of truth**. Any components or folders that exist in Storyblok but are not defined locally will be deleted.
+The local component definitions are the **only source of truth**. Any components or folders that exist in Storyblok but are not defined locally will be deleted.
