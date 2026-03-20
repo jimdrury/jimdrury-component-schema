@@ -1,4 +1,24 @@
 #!/usr/bin/env node
+
+const originalEmit = process.emit;
+// biome-ignore lint/suspicious/noExplicitAny: overriding process.emit requires loose types
+(process as any).emit = (event: string, ...args: unknown[]) => {
+  if (
+    event === 'warning' &&
+    (
+      args[0] as {
+        code?: string;
+      }
+    )?.code === 'MODULE_TYPELESS_PACKAGE_JSON'
+  ) {
+    return false;
+  }
+  return originalEmit.apply(process, [
+    event,
+    ...args,
+  ] as Parameters<typeof originalEmit>);
+};
+
 import path from 'node:path';
 import { Command } from 'commander';
 import { applyPlan } from './cli/apply';
