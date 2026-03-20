@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { tsImport } from 'tsx/esm/api';
+import { register } from 'tsx/esm/api';
 import type { ComponentDefinition } from '../schema/component-definition';
 
 function collectTsFiles(dir: string): string[] {
@@ -25,13 +25,24 @@ export async function discoverComponents(
   const files = collectTsFiles(componentsDir);
   const components: ComponentDefinition[] = [];
 
-  for (const file of files) {
-    const parentURL = pathToFileURL(file).href;
-    const mod = await tsImport(file, {
-      parentURL,
-      tsconfig: false,
-    });
-    components.push(mod.default);
+  const api = register({
+    namespace: `storyblok-schema-${Date.now()}`,
+  });
+
+  try {
+    for (const file of files) {
+      const fileUrl = pathToFileURL(file).href;
+      const mod = await api.import(fileUrl, import.meta.url);
+      components.push(
+        (
+          mod as {
+            default: ComponentDefinition;
+          }
+        ).default,
+      );
+    }
+  } finally {
+    api.unregister();
   }
 
   return components;
