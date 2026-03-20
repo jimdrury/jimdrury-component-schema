@@ -7,7 +7,7 @@
 Markdown editor. Stores raw markdown text. Use when you want editors to write in markdown syntax, or when you need markdown output for rendering.
 
 ```ts
-import { markdown } from "~/schema/field-type";
+import { markdown } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

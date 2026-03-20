@@ -7,7 +7,7 @@
 Nested component blocks. This is the field type that lets editors add, reorder, and remove [nestable](../component-type/nestable.md) components inside a story. It powers the block-based editing experience in Storyblok.
 
 ```ts
-import { blocks } from "~/schema/field-type";
+import { blocks } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

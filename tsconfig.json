@@ -9,12 +9,15 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"]
+      "@jimdrury/storyblok-component-schema": ["./src"]
     }
   },
-  "include": ["src/**/*", "components"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }

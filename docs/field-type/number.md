@@ -7,7 +7,7 @@
 Numeric input field. Use for quantities, prices, ratings, sort orders, or any numeric value.
 
 ```ts
-import { number } from "~/schema/field-type";
+import { number } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

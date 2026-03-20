@@ -1,6 +1,6 @@
 # Field Type Reference
 
-Complete parameter reference for every field type factory. All factories are imported from `~/schema/field-type`.
+Complete parameter reference for every field type factory. All factories are imported from `@jimdrury/storyblok-component-schema`.
 
 ## Base Parameters (all fields)
 

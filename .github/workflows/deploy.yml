@@ -12,7 +12,8 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 permissions:
-  contents: write
+  contents: read
+  packages: write
 
 jobs:
   lint-test:
@@ -29,128 +30,24 @@ jobs:
       - name: Run tests
         run: yarn test
 
-  plan:
-    name: Plan
+  publish:
+    name: Publish Package
+    needs: [lint-test]
     runs-on: ubuntu-latest
-    outputs:
-      has_changes: ${{ steps.parse.outputs.has_changes }}
-      creates: ${{ steps.parse.outputs.creates }}
-      updates: ${{ steps.parse.outputs.updates }}
-      deletes: ${{ steps.parse.outputs.deletes }}
-    env:
-      STORYBLOK_API_TOKEN: ${{ secrets.STORYBLOK_API_TOKEN }}
-      STORYBLOK_SPACE_ID: ${{ vars.STORYBLOK_SPACE_ID }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: yarn
+          registry-url: https://npm.pkg.github.com
+          scope: '@jimdrury'
       - run: yarn install --frozen-lockfile
 
-      - name: Check credentials
-        run: |
-          if [ -z "$STORYBLOK_API_TOKEN" ] || [ -z "$STORYBLOK_SPACE_ID" ]; then
-            echo "::error::STORYBLOK_API_TOKEN and STORYBLOK_SPACE_ID secrets must be configured"
-            exit 1
-          fi
+      - name: Build
+        run: yarn build
 
-      - name: Run plan
-        run: |
-          yarn plan 2>&1 | tee plan-raw.txt
-          sed 's/\x1b\[[0-9;]*m//g' plan-raw.txt > plan-output.txt
-
-      - name: Parse plan output
-        id: parse
-        run: |
-          if grep -q 'No changes.' plan-output.txt; then
-            echo "has_changes=false" >> "$GITHUB_OUTPUT"
-            echo "creates=0" >> "$GITHUB_OUTPUT"
-            echo "updates=0" >> "$GITHUB_OUTPUT"
-            echo "deletes=0" >> "$GITHUB_OUTPUT"
-          else
-            echo "has_changes=true" >> "$GITHUB_OUTPUT"
-            creates=$(grep -o '[0-9]* to create' plan-output.txt | grep -o '[0-9]*')
-            updates=$(grep -o '[0-9]* to update' plan-output.txt | grep -o '[0-9]*')
-            deletes=$(grep -o '[0-9]* to delete' plan-output.txt | grep -o '[0-9]*')
-            echo "creates=${creates:-0}" >> "$GITHUB_OUTPUT"
-            echo "updates=${updates:-0}" >> "$GITHUB_OUTPUT"
-            echo "deletes=${deletes:-0}" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Upload plan output
-        if: steps.parse.outputs.has_changes == 'true'
-        uses: actions/upload-artifact@v7
-        with:
-          name: plan-output
-          path: plan-output.txt
-
-  apply:
-    name: Apply
-    needs: [lint-test, plan]
-    if: needs.plan.outputs.has_changes == 'true'
-    runs-on: ubuntu-latest
-    # Requires a "production" environment with required reviewers configured
-    # in Settings > Environments to gate this behind a manual approval click.
-    environment: production
-    env:
-      STORYBLOK_API_TOKEN: ${{ secrets.STORYBLOK_API_TOKEN }}
-      STORYBLOK_SPACE_ID: ${{ vars.STORYBLOK_SPACE_ID }}
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: .nvmrc
-          cache: yarn
-      - run: yarn install --frozen-lockfile
-      - run: yarn apply
-
-  release:
-    name: Release
-    needs: [plan, apply]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - name: Download plan output
-        uses: actions/download-artifact@v8
-        with:
-          name: plan-output
-
-      - name: Determine version
-        id: version
-        run: |
-          latest_tag=$(git tag -l 'v*' --sort=-v:refname | head -n 1)
-
-          if [ -z "$latest_tag" ]; then
-            major=0 minor=0 patch=0
-          else
-            version="${latest_tag#v}"
-            IFS='.' read -r major minor patch <<< "$version"
-          fi
-
-          deletes=${{ needs.plan.outputs.deletes }}
-          creates=${{ needs.plan.outputs.creates }}
-
-          if [ "$deletes" -gt 0 ]; then
-            major=$((major + 1))
-            minor=0
-            patch=0
-          elif [ "$creates" -gt 0 ]; then
-            minor=$((minor + 1))
-            patch=0
-          else
-            patch=$((patch + 1))
-          fi
-
-          echo "tag=v${major}.${minor}.${patch}" >> "$GITHUB_OUTPUT"
-
-      - name: Create release
+      - name: Publish @jimdrury/storyblok-component-schema
+        run: npm publish --access restricted 2>&1 || echo "Already published or publish failed"
         env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release create "${{ steps.version.outputs.tag }}" \
-            --title "${{ steps.version.outputs.tag }}" \
-            --notes-file plan-output.txt
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

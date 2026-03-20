@@ -1,41 +1,37 @@
 # Component Schema
 
-Define Storyblok components as TypeScript code. Preview and apply changes with a Terraform-style workflow.
-
-```
-components/blog.ts  -->  yarn plan   -->  review changes
-                    -->  yarn apply  -->  Storyblok
-```
-
-Instead of clicking through the Storyblok UI to configure components, you write them as plain `.ts` files inside the `components/` directory. Each file exports a component definition built from two simple concepts:
-
-- **Component types** define _what kind_ of component it is (a content type or a nestable block).
-- **Field types** define _what data_ the component holds (text, images, links, etc.).
-
-Every parameter is validated at build time with Zod and at the type level with TypeScript, so misconfigurations are caught before they ever reach the API.
-
-## Quick start
+A TypeScript DSL and CLI for managing Storyblok components as code.
 
 ```bash
-# Install dependencies
-yarn install
+npm install @jimdrury/storyblok-component-schema
+```
 
-# Copy the example env file and fill in your credentials
-cp .env.example .env.local
+Define components as plain `.ts` files, then use the CLI to preview and apply changes to your Storyblok space:
 
-# Preview what would change in your Storyblok space
-yarn plan
+```ts
+import { contentType, text, richtext } from '@jimdrury/storyblok-component-schema';
 
-# Apply changes
-yarn apply
+export default contentType({
+    name: 'blog',
+    display_name: 'Blog',
+    schema: [
+        text({ name: 'title', required: true }),
+        richtext({ name: 'content' }),
+    ],
+});
+```
+
+```bash
+npx storyblok-component-schema plan     # preview changes
+npx storyblok-component-schema apply    # apply to Storyblok
 ```
 
 ## Documentation
 
 Full documentation lives in the [`docs/`](./docs) directory:
 
-- [Overview & API reference](./docs/readme.md) — component types, field types, and base parameters.
-- [Setup](./docs/setup.md) — environment variables, commands, and detailed usage.
+- [Overview & API reference](./docs/readme.md) -- component types, field types, and base parameters.
+- [Setup](./docs/setup.md) -- environment variables, commands, and detailed usage.
 
 ## [Contributing](./CONTRIBUTING.md)
 

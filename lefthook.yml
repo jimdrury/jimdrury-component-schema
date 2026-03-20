@@ -2,10 +2,10 @@ pre-commit:
   parallel: false
   commands:
     lint:
-      glob: "*.{ts,js}"
+      glob: "**/*.{ts,js}"
       run: npx biome lint --write {staged_files} && git add {staged_files}
     format:
-      glob: "*.{ts,js}"
+      glob: "**/*.{ts,js}"
       run: npx biome format --write {staged_files} && git add {staged_files}
 
 commit-msg:

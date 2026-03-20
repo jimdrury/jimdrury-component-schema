@@ -21,12 +21,10 @@ Define Storyblok components as TypeScript files in `components/`. Each file defa
 ## Imports
 
 ```ts
-import { contentType } from '~/schema/component-type';
-import { nestable } from '~/schema/component-type';
-import { text, textarea, richtext, markdown, number, datetime, boolean, option, options, blocks, multilink, asset, multiasset, tab, table, references } from '~/schema/field-type';
+import { contentType, nestable, text, textarea, richtext, markdown, number, datetime, boolean, option, options, blocks, multilink, asset, multiasset, tab, table, references } from '@jimdrury/storyblok-component-schema';
 ```
 
-Only import the factories you need. `~` resolves to `src/`.
+Only import the factories you need. All exports are available from `@jimdrury/storyblok-component-schema`.
 
 ## Component Types
 
@@ -135,8 +133,7 @@ Tab `name` is auto-prefixed with `tab_` in the API payload. Field names must be 
 ### Content type with tabs
 
 ```ts
-import { contentType } from '~/schema/component-type';
-import { blocks, boolean, datetime, option, tab, text, textarea } from '~/schema/field-type';
+import { contentType, blocks, boolean, datetime, option, tab, text, textarea } from '@jimdrury/storyblok-component-schema';
 
 export default contentType({
     name: 'article',
@@ -177,8 +174,7 @@ export default contentType({
 ### Nestable with restrictions and tags
 
 ```ts
-import { nestable } from '~/schema/component-type';
-import { asset, blocks, multilink, option, text } from '~/schema/field-type';
+import { nestable, asset, blocks, multilink, option, text } from '@jimdrury/storyblok-component-schema';
 
 export default nestable({
     name: 'card',
@@ -208,8 +204,7 @@ export default nestable({
 ### Story references
 
 ```ts
-import { contentType } from '~/schema/component-type';
-import { references, text } from '~/schema/field-type';
+import { contentType, references, text } from '@jimdrury/storyblok-component-schema';
 import blog from './blog';
 
 export default contentType({

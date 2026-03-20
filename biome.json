@@ -3,9 +3,7 @@
   "files": {
     "includes": [
       "src/**/*.ts",
-      "src/**/*.js",
-      "components/**/*.ts",
-      "components/**/*.js"
+      "src/**/*.js"
     ]
   },
   "formatter": {

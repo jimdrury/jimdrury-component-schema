@@ -7,7 +7,7 @@
 Story reference field. Lets editors pick one or more published stories from the space. Under the hood this maps to the Storyblok `options` type with `source: "internal_stories"` -- the factory sets those flags automatically so you only configure what matters.
 
 ```ts
-import { references } from "~/schema/field-type";
+import { references } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

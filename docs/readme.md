@@ -21,18 +21,22 @@ See [Setup](./setup.md) for installation, environment variables, and available c
 ## Project structure
 
 ```
-components/          Component definitions (one file per component)
+components/              Component definitions (one file per component)
 src/
-  cli.ts             CLI entry point (plan / apply commands)
-  plan.ts            Computes the diff between local and remote state
-  apply.ts           Executes a plan against the Storyblok API
-  format.ts          Terraform-style terminal output formatting
-  discover.ts        Auto-discovers components/*.ts at runtime
-  env.ts             Loads and validates environment variables
-  api/               Storyblok Management API client
+  index.ts               Public barrel (re-exports everything)
+  bin.ts                 CLI entry point (plan / apply commands)
   schema/
-    component-type/  contentType() and nestable() factories
-    field-type/      text(), blocks(), asset(), etc.
+    component-type/      contentType() and nestable() factories
+    field-type/          text(), blocks(), asset(), etc.
+    component-definition.ts
+  cli/
+    plan.ts              Computes the diff between local and remote state
+    apply.ts             Executes a plan against the Storyblok API
+    format.ts            Terraform-style terminal output formatting
+    discover.ts          Auto-discovers components/*.ts at runtime
+    env.ts               Loads and validates environment variables
+    payload.ts           Converts definitions to Storyblok API payloads
+    api/                 Storyblok Management API client
 ```
 
 ---
@@ -42,8 +46,7 @@ src/
 A component file exports a default call to either `contentType()` or `nestable()`:
 
 ```ts
-import { contentType } from "~/schema/component-type";
-import { text, richtext } from "~/schema/field-type";
+import { contentType, text, richtext } from "@jimdrury/storyblok-component-schema";
 
 export default contentType({
     name: 'blog',

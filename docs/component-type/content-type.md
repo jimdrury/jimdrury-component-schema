@@ -7,7 +7,7 @@
 A **content type** is a root-level component. It represents a top-level entry in Storyblok -- things like pages, blog posts, or site-wide settings. Content types can be created directly in the content tree and serve as the starting point for a story.
 
 ```ts
-import { contentType } from "~/schema/component-type";
+import { contentType } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---
@@ -37,8 +37,7 @@ Calling `contentType()` returns an object with `is_root: true`, which tells Stor
 ### Minimal
 
 ```ts
-import { contentType } from "~/schema/component-type";
-import { text } from "~/schema/field-type";
+import { contentType, text } from "@jimdrury/storyblok-component-schema";
 
 export default contentType({
     name: 'article',
@@ -52,8 +51,7 @@ export default contentType({
 ### Full-featured
 
 ```ts
-import { contentType } from "~/schema/component-type";
-import { blocks, text, richtext, datetime, option } from "~/schema/field-type";
+import { contentType, blocks, text, richtext, datetime, option } from "@jimdrury/storyblok-component-schema";
 
 export default contentType({
     name: 'page',

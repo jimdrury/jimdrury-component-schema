@@ -1,4 +1,4 @@
-import type { ComponentDefinition } from './discover';
+import type { ComponentDefinition } from '../schema/component-definition';
 
 function resolveFolderUuids(
   paths: string[],

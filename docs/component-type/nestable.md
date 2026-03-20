@@ -7,7 +7,7 @@
 A **nestable** component is a reusable block that can be embedded inside other components via a [blocks](../field-type/blocks.md) field. Nestables cannot exist on their own in the content tree -- they always live inside a parent story. Use them for UI primitives like grids, cards, heroes, or any repeatable content structure.
 
 ```ts
-import { nestable } from "~/schema/component-type";
+import { nestable } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---
@@ -59,8 +59,7 @@ blocks({ name: 'body', disallowed_tags: ['layout'] })
 ### Minimal
 
 ```ts
-import { nestable } from "~/schema/component-type";
-import { text } from "~/schema/field-type";
+import { nestable, text } from "@jimdrury/storyblok-component-schema";
 
 export default nestable({
     name: 'text_block',
@@ -74,8 +73,7 @@ export default nestable({
 ### Full-featured
 
 ```ts
-import { nestable } from "~/schema/component-type";
-import { blocks, multilink, asset, option } from "~/schema/field-type";
+import { nestable, blocks, multilink, asset, option } from "@jimdrury/storyblok-component-schema";
 
 export default nestable({
     name: 'grid',

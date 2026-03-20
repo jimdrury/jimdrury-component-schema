@@ -7,7 +7,7 @@
 Visual rich text editor (WYSIWYG). Produces structured content that can include headings, lists, bold, italic, links, and more. Use for body content where editors need formatting controls.
 
 ```ts
-import { richtext } from "~/schema/field-type";
+import { richtext } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---
