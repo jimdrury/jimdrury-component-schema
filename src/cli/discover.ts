@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { register } from 'tsx/esm/api';
+import { tsImport } from 'tsx/esm/api';
 import type { ComponentDefinition } from '../schema/component-definition';
 
 function collectTsFiles(dir: string): string[] {
@@ -19,22 +19,34 @@ function collectTsFiles(dir: string): string[] {
   return results;
 }
 
+function extractDefault(mod: Record<string, unknown>): ComponentDefinition {
+  let value = mod.default;
+  if (
+    value &&
+    typeof value === 'object' &&
+    '__esModule' in value &&
+    'default' in value
+  ) {
+    value = (value as Record<string, unknown>).default;
+  }
+  return value as ComponentDefinition;
+}
+
 export async function discoverComponents(
   componentsDir: string,
 ): Promise<ComponentDefinition[]> {
   const files = collectTsFiles(componentsDir);
   const components: ComponentDefinition[] = [];
+  const parentURL = pathToFileURL(
+    path.join(componentsDir, '_resolver.ts'),
+  ).href;
 
-  const unregister = register();
-
-  try {
-    for (const file of files) {
-      const fileUrl = pathToFileURL(file).href;
-      const mod = await import(fileUrl);
-      components.push(mod.default);
-    }
-  } finally {
-    unregister();
+  for (const file of files) {
+    const mod = await tsImport(file, {
+      parentURL,
+      tsconfig: false,
+    });
+    components.push(extractDefault(mod as Record<string, unknown>));
   }
 
   return components;
