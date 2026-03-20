@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { tsImport } from 'tsx/esm/api';
 import type { ComponentDefinition } from '../schema/component-definition';
 
 function collectTsFiles(dir: string): string[] {
@@ -24,7 +25,10 @@ export async function discoverComponents(
   const components: ComponentDefinition[] = [];
 
   for (const file of files) {
-    const mod = await import(file);
+    const mod = await tsImport(file, {
+      parentURL: import.meta.url,
+      tsconfig: false,
+    });
     components.push(mod.default);
   }
 
