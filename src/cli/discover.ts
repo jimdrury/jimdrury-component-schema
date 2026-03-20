@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { tsImport } from 'tsx/esm/api';
 import type { ComponentDefinition } from '../schema/component-definition';
 
@@ -25,8 +26,9 @@ export async function discoverComponents(
   const components: ComponentDefinition[] = [];
 
   for (const file of files) {
+    const parentURL = pathToFileURL(file).href;
     const mod = await tsImport(file, {
-      parentURL: import.meta.url,
+      parentURL,
       tsconfig: false,
     });
     components.push(mod.default);
