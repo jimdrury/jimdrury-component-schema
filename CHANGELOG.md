@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.1](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.0...storyblok-component-schema-v0.4.1) (2026-03-20)
+
+
+### Bug Fixes
+
+* guard against undefined schema in plan and payload ([9456781](https://github.com/jimdrury/jimdrury-component-schema/commit/94567812b12cebcd5cd066a772f4e2b335a21d6d))
+* guard against undefined schema in plan and payload ([49d6ba2](https://github.com/jimdrury/jimdrury-component-schema/commit/49d6ba2c25bc2c2134aa51298c8a081cba4af64e))
+
 ## [0.4.0](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.3.0...storyblok-component-schema-v0.4.0) (2026-03-20)
 
 
