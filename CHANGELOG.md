@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.4](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.3...storyblok-component-schema-v0.4.4) (2026-03-20)
+
+
+### Bug Fixes
+
+* unwrap double-wrapped default export from tsImport ([#19](https://github.com/jimdrury/jimdrury-component-schema/issues/19)) ([d8d3171](https://github.com/jimdrury/jimdrury-component-schema/commit/d8d3171d09e3eec32befb738c004c26d9e39f359))
+
 ## [0.4.3](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.2...storyblok-component-schema-v0.4.3) (2026-03-20)
 
 
