@@ -7,7 +7,7 @@
 Multi-select dropdown. Like [option](./option.md), but editors can pick **multiple** values. Supports the same data sources.
 
 ```ts
-import { options } from "~/schema/field-type";
+import { options } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

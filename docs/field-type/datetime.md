@@ -7,7 +7,7 @@
 Date and time picker. Use for publish dates, event times, deadlines, or any temporal value.
 
 ```ts
-import { datetime } from "~/schema/field-type";
+import { datetime } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

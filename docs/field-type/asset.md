@@ -7,7 +7,7 @@
 Single file or image picker. Lets editors select one asset from the Storyblok asset library. Use for hero images, thumbnails, downloadable files, etc.
 
 ```ts
-import { asset } from "~/schema/field-type";
+import { asset } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

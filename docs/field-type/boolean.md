@@ -7,7 +7,7 @@
 Toggle or checkbox field. Use for on/off states like visibility flags, feature toggles, or any true/false value.
 
 ```ts
-import { boolean } from "~/schema/field-type";
+import { boolean } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

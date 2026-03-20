@@ -1,7 +1,7 @@
 {
-  "name": "jimdrury-component-schema",
-  "version": "1.0.0",
-  "description": "Storyblok components managed through source control",
+  "name": "@jimdrury/storyblok-component-schema",
+  "version": "0.1.0",
+  "description": "Terraform-style TypeScript DSL for managing Storyblok components as code",
   "keywords": [
     "storyblok",
     "components",
@@ -19,15 +19,32 @@
   "license": "MIT",
   "author": "Jim Drury",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "storyblok-component-schema": "./dist/bin.js"
+  },
+  "files": [
+    "dist",
+    "skills"
+  ],
   "scripts": {
-    "plan": "tsx src/cli.ts plan",
-    "apply": "tsx src/cli.ts apply",
+    "build": "tsup",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "test": "vitest run",
     "test:watch": "vitest",
     "prepare": "lefthook install"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "dependencies": {
     "axios": "^1.13.6",
@@ -42,6 +59,7 @@
     "@types/node": "^24.12.0",
     "@vitest/coverage-v8": "^4.0.18",
     "lefthook": "^2.1.3",
+    "tsup": "^8.4.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"

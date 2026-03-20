@@ -1,16 +1,10 @@
 import { defineConfig } from 'vitest/config';
-import path from 'path';
 
 export default defineConfig({
-  resolve: {
-    alias: {
-      '~': path.resolve(__dirname, './src'),
-    },
-  },
   test: {
     globals: true,
     coverage: {
-      exclude: ['src/__fixtures__/**'],
+      exclude: ['**/__fixtures__/**'],
     },
   },
 });

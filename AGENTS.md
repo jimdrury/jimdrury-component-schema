@@ -6,8 +6,7 @@ This file provides guidance to AI coding agents working with code in this reposi
 
 ```bash
 yarn install          # Install dependencies
-yarn plan             # Preview changes against Storyblok (read-only)
-yarn apply            # Apply changes to Storyblok
+yarn build            # Build with tsup
 yarn test             # Run tests (unit only)
 yarn test:watch       # Run tests in watch mode
 yarn lint             # Check with Biome
@@ -42,25 +41,25 @@ components/*.ts  →  discoverComponents()  →  computePlan()  →  applyPlan()
                                            Storyblok API (read)
 ```
 
-- **`src/discover.ts`** — dynamically imports each `components/*.ts` file and collects the default exports as `ComponentDefinition` objects.
-- **`src/plan.ts`** — fetches remote state (components, folders, tags), diffs it against local definitions, and returns a `Plan` with typed `PlanAction[]`.
-- **`src/apply.ts`** — executes a `Plan` against the API in dependency order: folders first (shallow-to-deep), then tags, then creates/updates, then deletes (components first, folders deep-to-shallow).
-- **`src/payload.ts`** — converts a `ComponentDefinition` into a Storyblok API payload, resolving folder paths → UUIDs and tag names → IDs.
-- **`src/api/storyblok.ts`** — thin Axios wrapper around the Storyblok Management API.
-- **`src/env.ts`** — loads `.env`/`.env.local`, validates with Zod, and exports the singleton `storyblokApi`.
+- **`src/cli/discover.ts`** — dynamically imports each `components/*.ts` file and collects the default exports as `ComponentDefinition` objects.
+- **`src/cli/plan.ts`** — fetches remote state (components, folders, tags), diffs it against local definitions, and returns a `Plan` with typed `PlanAction[]`.
+- **`src/cli/apply.ts`** — executes a `Plan` against the API in dependency order: folders first (shallow-to-deep), then tags, then creates/updates, then deletes (components first, folders deep-to-shallow).
+- **`src/cli/payload.ts`** — converts a `ComponentDefinition` into a Storyblok API payload, resolving folder paths → UUIDs and tag names → IDs.
+- **`src/cli/api/storyblok.ts`** — thin Axios wrapper around the Storyblok Management API.
+- **`src/cli/env.ts`** — loads `.env`/`.env.local`, validates with Zod, and returns a `StoryblokApi` instance.
 
 ### Schema layer
 
-`src/schema/` contains the public API used in `components/*.ts` files:
+`src/schema/component-type/` and `src/schema/field-type/` contain the public API used in `components/*.ts` files:
 
 - **`component-type/`** — `contentType()` and `nestable()` factory functions. Each validates params with Zod, then calls `buildSchema()` to convert the `schema` array into a keyed object (handling `tab()` grouping).
 - **`field-type/`** — one file per Storyblok field type (`text`, `richtext`, `blocks`, `asset`, etc.). Each factory validates with its Zod schema and returns an object with `_name` (stripped before sending to the API) and `type` plus field-specific props.
 
 The `_name` internal property carries the field key through the type system; `buildSchema()` strips it and uses it as the object key.
 
-### Path alias
+### Package
 
-`~` resolves to `src/` (configured in `vitest.config.ts` and used in imports throughout).
+Published as `@jimdrury/storyblok-component-schema` on GitHub Package Registry. Component files import from this package (`import { nestable, text } from '@jimdrury/storyblok-component-schema'`). The package also provides a CLI binary (`storyblok-component-schema plan` / `storyblok-component-schema apply`).
 
 ### Code style (Biome)
 

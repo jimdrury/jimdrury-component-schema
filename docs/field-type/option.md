@@ -7,7 +7,7 @@
 Single-select dropdown. Use when editors need to pick exactly one value from a predefined list. Supports inline options, datasources, internal stories, and external sources.
 
 ```ts
-import { option } from "~/schema/field-type";
+import { option } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

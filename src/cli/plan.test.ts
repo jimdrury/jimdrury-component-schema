@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { ComponentDefinition } from '../schema/component-definition';
 import type { StoryblokApi } from './api/storyblok';
-import type { ComponentDefinition } from './discover';
 import { computePlan, diffComponent } from './plan';
 
 function createMockApi(

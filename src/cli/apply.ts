@@ -1,5 +1,5 @@
+import type { ComponentDefinition } from '../schema/component-definition';
 import type { StoryblokApi } from './api/storyblok';
-import type { ComponentDefinition } from './discover';
 import { buildComponentPayload } from './payload';
 import type { Plan, PlanAction } from './plan';
 

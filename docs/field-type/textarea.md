@@ -7,7 +7,7 @@
 Multi-line plain text input. Use for descriptions, summaries, or any longer free-form text that doesn't need rich formatting.
 
 ```ts
-import { textarea } from "~/schema/field-type";
+import { textarea } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

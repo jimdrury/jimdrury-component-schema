@@ -9,10 +9,11 @@
 yarn install
 ```
 
-3. Copy the example environment file and add your Storyblok credentials:
+3. Create a `.env.local` with your Storyblok credentials:
 
-```bash
-cp .env.example .env.local
+```
+STORYBLOK_API_TOKEN=your-management-api-token
+STORYBLOK_SPACE_ID=your-space-id
 ```
 
 4. Run tests:
@@ -22,20 +23,6 @@ yarn test
 ```
 
 ## Development workflow
-
-### Adding or updating components
-
-Component definitions live in `components/`. Each file exports a default call to `contentType()` or `nestable()`. See the [docs](./docs/readme.md) for the full API reference.
-
-### Running locally
-
-```bash
-# Preview changes without modifying Storyblok
-yarn plan
-
-# Apply changes to your Storyblok space
-yarn apply
-```
 
 ### Linting and formatting
 
@@ -61,34 +48,18 @@ yarn test:watch
 
 ## CI/CD
 
-Two GitHub Actions workflows automate linting, testing, and deployment.
+Two GitHub Actions workflows automate quality checks and publishing.
 
 ### Pull requests (`ci.yml`)
 
-Every pull request runs **lint**, **test**, and **plan**. The Storyblok plan output is posted as a sticky comment on the PR so reviewers can see exactly what would change.
+Every pull request runs **lint**, **build**, and **test**. Test results are reported as a check on the PR.
 
 ### Merging to main (`deploy.yml`)
 
 When a PR is merged to `main`:
 
-1. **Plan** — runs `yarn plan` and captures the diff.
-2. **Apply** — gated behind the `production` environment, which requires manual approval. A reviewer must click "Approve" in the GitHub Actions UI before changes are pushed to Storyblok.
-3. **Release** — after apply succeeds a GitHub Release is created with the plan details in the release notes. The version tag is auto-incremented based on the type of changes:
-   - Deletes → major bump
-   - Creates (no deletes) → minor bump
-   - Updates only → patch bump
-
-If the plan reports no changes, the apply and release steps are skipped entirely.
-
-### Required setup
-
-The following must be configured in the GitHub repository settings:
-
-- **Secrets** (`Settings > Secrets and variables > Actions`):
-  - `STORYBLOK_API_TOKEN` — Storyblok Management API token
-  - `STORYBLOK_SPACE_ID` — target Storyblok space ID
-- **Environment** (`Settings > Environments`):
-  - Create an environment named `production` with **Required reviewers** enabled.
+1. **Lint & Test** -- verifies the code is clean.
+2. **Publish** -- builds and publishes `@jimdrury/storyblok-component-schema` to the GitHub Package Registry. Already-published versions are skipped.
 
 ## Pull requests
 

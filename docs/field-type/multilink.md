@@ -7,7 +7,7 @@
 Link field supporting internal stories, external URLs, email addresses, and asset links. Use for CTAs, navigation items, or any field that needs to point somewhere.
 
 ```ts
-import { multilink } from "~/schema/field-type";
+import { multilink } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

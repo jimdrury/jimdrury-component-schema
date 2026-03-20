@@ -7,7 +7,7 @@
 Multiple file or image picker. Like [asset](./asset.md), but editors can select **multiple** files. Use for image galleries, file attachments, or any field that needs more than one asset.
 
 ```ts
-import { multiasset } from "~/schema/field-type";
+import { multiasset } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

@@ -9,7 +9,7 @@ Group fields into a tab in the Storyblok editor. Tabs are a UI-only concept — 
 Fields before the first `tab()` appear in Storyblok's default "General" tab. Each `tab()` creates an additional tab containing the fields passed to it.
 
 ```ts
-import { tab } from "~/schema/field-type";
+import { tab } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

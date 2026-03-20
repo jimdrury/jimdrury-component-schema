@@ -7,7 +7,7 @@
 Editable table field. Renders a spreadsheet-like grid where editors can add rows and columns of data. Use for pricing tables, comparison charts, schedules, or any tabular content.
 
 ```ts
-import { table } from "~/schema/field-type";
+import { table } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---

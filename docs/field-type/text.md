@@ -7,7 +7,7 @@
 Single-line text input. Use for titles, headings, slugs, or any short string value.
 
 ```ts
-import { text } from "~/schema/field-type";
+import { text } from "@jimdrury/storyblok-component-schema";
 ```
 
 ---
