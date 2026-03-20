@@ -12,8 +12,9 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 permissions:
-  contents: read
+  contents: write
   packages: write
+  pull-requests: write
 
 jobs:
   lint-test:
@@ -30,9 +31,24 @@ jobs:
       - name: Run tests
         run: yarn test
 
+  release-please:
+    name: Release
+    needs: [lint-test]
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
   publish:
     name: Publish Package
-    needs: [lint-test]
+    needs: [release-please]
+    if: needs.release-please.outputs.release_created == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -48,6 +64,6 @@ jobs:
         run: yarn build
 
       - name: Publish @jimdrury/storyblok-component-schema
-        run: npm publish --access public 2>&1 || echo "Already published or publish failed"
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
