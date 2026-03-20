@@ -1,0 +1,131 @@
+{
+  "name": "storyblok-component-schema",
+  "version": "1.0.0",
+  "description": "TypeScript DSL and CLI for managing Storyblok components as code. Includes skills for installation, component creation, and all schema field types.",
+  "owner": {
+    "name": "Jim Drury",
+    "email": "jim@jimdrury.co.uk"
+  },
+  "plugins": [
+    {
+      "name": "install",
+      "description": "Install and configure @jimdrury/storyblok-component-schema in a project. Registry setup, config file, credentials, and CI integration.",
+      "source": "./skills/install",
+      "category": "development"
+    },
+    {
+      "name": "create-component",
+      "description": "Create and configure Storyblok component definitions using the TypeScript schema DSL. Component types, field types, tabs, block restrictions, and validation.",
+      "source": "./skills/create-component",
+      "category": "development"
+    },
+    {
+      "name": "content-type",
+      "description": "Use the contentType() factory to define root-level Storyblok components like pages, articles, or settings.",
+      "source": "./skills/content-type",
+      "category": "development"
+    },
+    {
+      "name": "nestable",
+      "description": "Use the nestable() factory to define reusable Storyblok blocks that can be embedded inside other components via blocks() fields.",
+      "source": "./skills/nestable",
+      "category": "development"
+    },
+    {
+      "name": "text",
+      "description": "Use the text() factory for single-line text input fields like titles, headings, or slugs.",
+      "source": "./skills/text",
+      "category": "development"
+    },
+    {
+      "name": "textarea",
+      "description": "Use the textarea() factory for multi-line plain text fields like descriptions or bios.",
+      "source": "./skills/textarea",
+      "category": "development"
+    },
+    {
+      "name": "richtext",
+      "description": "Use the richtext() factory for WYSIWYG rich text editor fields.",
+      "source": "./skills/richtext",
+      "category": "development"
+    },
+    {
+      "name": "markdown",
+      "description": "Use the markdown() factory for markdown editor fields.",
+      "source": "./skills/markdown",
+      "category": "development"
+    },
+    {
+      "name": "number",
+      "description": "Use the number() factory for numeric input fields like prices, ratings, or quantities.",
+      "source": "./skills/number",
+      "category": "development"
+    },
+    {
+      "name": "datetime",
+      "description": "Use the datetime() factory for date and time picker fields.",
+      "source": "./skills/datetime",
+      "category": "development"
+    },
+    {
+      "name": "boolean",
+      "description": "Use the boolean() factory for toggle/checkbox fields.",
+      "source": "./skills/boolean",
+      "category": "development"
+    },
+    {
+      "name": "option",
+      "description": "Use the option() factory for single-select dropdown fields. Supports inline options, datasources, and internal stories.",
+      "source": "./skills/option",
+      "category": "development"
+    },
+    {
+      "name": "options",
+      "description": "Use the options() factory for multi-select dropdown fields.",
+      "source": "./skills/options",
+      "category": "development"
+    },
+    {
+      "name": "blocks",
+      "description": "Use the blocks() factory for nested component block fields. Controls which nestable components editors can add, reorder, and remove.",
+      "source": "./skills/blocks",
+      "category": "development"
+    },
+    {
+      "name": "multilink",
+      "description": "Use the multilink() factory for link fields supporting internal stories, external URLs, email, and asset links.",
+      "source": "./skills/multilink",
+      "category": "development"
+    },
+    {
+      "name": "asset",
+      "description": "Use the asset() factory for single file/image picker fields.",
+      "source": "./skills/asset",
+      "category": "development"
+    },
+    {
+      "name": "multiasset",
+      "description": "Use the multiasset() factory for multiple file/image picker fields like galleries.",
+      "source": "./skills/multiasset",
+      "category": "development"
+    },
+    {
+      "name": "tab",
+      "description": "Use the tab() factory to group fields into editor tabs. UI-only, does not affect content structure.",
+      "source": "./skills/tab",
+      "category": "development"
+    },
+    {
+      "name": "table",
+      "description": "Use the table() factory for editable spreadsheet-like table fields.",
+      "source": "./skills/table",
+      "category": "development"
+    },
+    {
+      "name": "references",
+      "description": "Use the references() factory for story reference picker fields. Lets editors pick published stories from the space.",
+      "source": "./skills/references",
+      "category": "development"
+    }
+  ]
+}
