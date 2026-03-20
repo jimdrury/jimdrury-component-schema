@@ -4,7 +4,7 @@ export { applyPlan } from './cli/apply';
 export type { Config } from './cli/config';
 export { loadConfig } from './cli/config';
 export { discoverComponents } from './cli/discover';
-export { loadEnv } from './cli/env';
+export { loadDotenv, loadEnv } from './cli/env';
 export { formatApplyResult, formatPlan } from './cli/format';
 export {
   buildComponentPayload,

@@ -4,7 +4,7 @@ import { Command } from 'commander';
 import { applyPlan } from './cli/apply';
 import { loadConfig } from './cli/config';
 import { discoverComponents } from './cli/discover';
-import { loadEnv } from './cli/env';
+import { loadDotenv, loadEnv } from './cli/env';
 import { formatApplyResult, formatPlan } from './cli/format';
 import { computePlan } from './cli/plan';
 
@@ -20,6 +20,7 @@ program
   .description('Preview changes that would be applied to your Storyblok space')
   .option('--dir <path>', 'Path to components directory')
   .action(async (opts: { dir?: string }) => {
+    loadDotenv();
     const config = loadConfig();
     const componentsDir = path.resolve(
       opts.dir ?? config.componentsDir ?? './components',
@@ -38,6 +39,7 @@ program
   .description('Apply changes to your Storyblok space')
   .option('--dir <path>', 'Path to components directory')
   .action(async (opts: { dir?: string }) => {
+    loadDotenv();
     const config = loadConfig();
     const componentsDir = path.resolve(
       opts.dir ?? config.componentsDir ?? './components',

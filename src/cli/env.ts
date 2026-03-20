@@ -8,7 +8,7 @@ const envSchema = z.object({
   STORYBLOK_SPACE_ID: z.string(),
 });
 
-export function loadEnv(configFile?: Config): StoryblokApi {
+export function loadDotenv(): void {
   config({
     path: [
       '.env',
@@ -16,7 +16,9 @@ export function loadEnv(configFile?: Config): StoryblokApi {
     ],
     quiet: true,
   });
+}
 
+export function loadEnv(configFile?: Config): StoryblokApi {
   const apiToken = configFile?.storyblok?.apiToken;
   const spaceId = configFile?.storyblok?.spaceId;
 
