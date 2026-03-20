@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { tsImport } from 'tsx/esm/api';
+import { register } from 'tsx/esm/api';
 import type { ComponentDefinition } from '../schema/component-definition';
 
 function collectTsFiles(dir: string): string[] {
@@ -25,13 +25,16 @@ export async function discoverComponents(
   const files = collectTsFiles(componentsDir);
   const components: ComponentDefinition[] = [];
 
-  for (const file of files) {
-    const parentURL = pathToFileURL(file).href;
-    const mod = await tsImport(file, {
-      parentURL,
-      tsconfig: false,
-    });
-    components.push(mod.default);
+  const unregister = register();
+
+  try {
+    for (const file of files) {
+      const fileUrl = pathToFileURL(file).href;
+      const mod = await import(fileUrl);
+      components.push(mod.default);
+    }
+  } finally {
+    unregister();
   }
 
   return components;
