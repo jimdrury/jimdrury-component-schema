@@ -55,6 +55,17 @@ export default contentType({
 });
 ```
 
+Configure your project with a `.component-schema.yaml`:
+
+```yaml
+componentsDir: ./components
+storyblok:
+  apiToken: "${STORYBLOK_API_TOKEN}"
+  spaceId: "${STORYBLOK_SPACE_ID}"
+```
+
+Then run the CLI:
+
 ```bash
 npx storyblok-component-schema plan     # preview changes
 npx storyblok-component-schema apply    # apply to Storyblok
