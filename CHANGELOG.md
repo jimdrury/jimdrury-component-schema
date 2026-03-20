@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.1...storyblok-component-schema-v0.4.2) (2026-03-20)
+
+
+### Bug Fixes
+
+* use component file path as parentURL for tsImport resolution ([#15](https://github.com/jimdrury/jimdrury-component-schema/issues/15)) ([17260c6](https://github.com/jimdrury/jimdrury-component-schema/commit/17260c68f238ae6679415966eadce7f751c8c3c7))
+
 ## [0.4.1](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.0...storyblok-component-schema-v0.4.1) (2026-03-20)
 
 
