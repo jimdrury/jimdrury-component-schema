@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.2...storyblok-component-schema-v0.4.3) (2026-03-20)
+
+
+### Bug Fixes
+
+* use global tsx register with native import for component loading ([#17](https://github.com/jimdrury/jimdrury-component-schema/issues/17)) ([60c2c75](https://github.com/jimdrury/jimdrury-component-schema/commit/60c2c756fe48a7fbdf2aaa5cc52da1460317c4ab))
+
 ## [0.4.2](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.1...storyblok-component-schema-v0.4.2) (2026-03-20)
 
 
