@@ -11,12 +11,59 @@ description: >-
 
 Define Storyblok components as TypeScript files in `components/`. Each file default-exports a call to `contentType()` or `nestable()` with a `schema` array of field types.
 
+## Installation
+
+This package is published to the GitHub Package Registry.
+
+### npm / Yarn 1
+
+Add a `.npmrc` to your project root:
+
+```
+@jimdrury:registry=https://npm.pkg.github.com
+```
+
+Then install:
+
+```bash
+npm install @jimdrury/storyblok-component-schema
+```
+
+### Yarn 2+ (Berry)
+
+Add to your `.yarnrc.yml`:
+
+```yaml
+npmScopes:
+  jimdrury:
+    npmRegistryServer: https://npm.pkg.github.com
+```
+
+Then install:
+
+```bash
+yarn add @jimdrury/storyblok-component-schema
+```
+
+## Configuration
+
+Create a `.component-schema.yaml` in your project root:
+
+```yaml
+componentsDir: ./components
+storyblok:
+  apiToken: "${STORYBLOK_API_TOKEN}"
+  spaceId: "${STORYBLOK_SPACE_ID}"
+```
+
+Values wrapped in `${...}` are resolved from environment variables at runtime. All fields are optional -- the CLI falls back to env vars (`.env.local`) and defaults.
+
 ## Workflow
 
 1. Create `components/<name>.ts`
 2. Import the component-type factory and field-type factories
 3. Default-export the component definition
-4. Run `yarn plan` to preview, `yarn apply` to push
+4. Run `npx storyblok-component-schema plan` to preview, `npx storyblok-component-schema apply` to push
 
 ## Imports
 
@@ -230,4 +277,4 @@ When creating a component:
 - [ ] `display_name` is set to a human-readable label
 - [ ] All field `name` values are unique across the entire schema (including inside tabs)
 - [ ] `blocks()` fields use at most one restriction type
-- [ ] Run `yarn plan` to verify before `yarn apply`
+- [ ] Run `npx storyblok-component-schema plan` to verify before `npx storyblok-component-schema apply`
