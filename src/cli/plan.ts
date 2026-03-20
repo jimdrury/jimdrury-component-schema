@@ -114,7 +114,7 @@ function getRequiredTagNames(components: ComponentDefinition[]): Set<string> {
         names.add(tag);
       }
     }
-    for (const field of Object.values(component.schema)) {
+    for (const field of Object.values(component.schema ?? {})) {
       const f = field as Record<string, unknown>;
       for (const key of [
         '_allowed_tags',

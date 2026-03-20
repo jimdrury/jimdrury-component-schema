@@ -97,7 +97,7 @@ export function buildComponentPayload(
     ? folderPathToUuid.get(folder)
     : undefined;
   const schema = resolveSchemaRestrictions(
-    componentData.schema,
+    componentData.schema ?? {},
     folderPathToUuid,
     tagNameToId,
   );
