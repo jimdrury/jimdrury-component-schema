@@ -1,8 +1,34 @@
 import fs from 'node:fs';
+import { register } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { tsImport } from 'tsx/esm/api';
 import type { ComponentDefinition } from '../schema/component-definition';
+
+const TS_EXTENSION_RESOLVE_HOOK = [
+  'export async function resolve(specifier, context, nextResolve) {',
+  '  try {',
+  '    return await nextResolve(specifier, context);',
+  '  } catch (error) {',
+  '    if (error.code === "ERR_MODULE_NOT_FOUND" && specifier.startsWith(".")) {',
+  '      try { return await nextResolve(specifier + ".ts", context); } catch {}',
+  '    }',
+  '    throw error;',
+  '  }',
+  '}',
+].join('\n');
+
+let resolveHookRegistered = false;
+
+function ensureTsResolveHook(): void {
+  if (resolveHookRegistered) {
+    return;
+  }
+  resolveHookRegistered = true;
+  register(
+    `data:text/javascript,${encodeURIComponent(TS_EXTENSION_RESOLVE_HOOK)}`,
+  );
+}
 
 function collectTsFiles(dir: string): string[] {
   const results: string[] = [];
@@ -32,28 +58,13 @@ function extractDefault(mod: Record<string, unknown>): ComponentDefinition {
   return value as ComponentDefinition;
 }
 
-function findNearestTsconfig(startDir: string): string | undefined {
-  let currentDir = path.resolve(startDir);
-  while (true) {
-    const candidate = path.join(currentDir, 'tsconfig.json');
-    if (fs.existsSync(candidate)) {
-      return candidate;
-    }
-
-    const parentDir = path.dirname(currentDir);
-    if (parentDir === currentDir) {
-      return undefined;
-    }
-    currentDir = parentDir;
-  }
-}
-
 export async function discoverComponents(
   componentsDir: string,
 ): Promise<ComponentDefinition[]> {
+  ensureTsResolveHook();
+
   const files = collectTsFiles(componentsDir);
   const components: ComponentDefinition[] = [];
-  const tsconfigPath = findNearestTsconfig(componentsDir);
   const parentURL = pathToFileURL(
     path.join(componentsDir, '_resolver.ts'),
   ).href;
@@ -61,7 +72,7 @@ export async function discoverComponents(
   for (const file of files) {
     const mod = await tsImport(file, {
       parentURL,
-      tsconfig: tsconfigPath ?? false,
+      tsconfig: false,
     });
     components.push(extractDefault(mod as Record<string, unknown>));
   }

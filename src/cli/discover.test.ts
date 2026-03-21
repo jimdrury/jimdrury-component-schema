@@ -5,8 +5,11 @@ import { discoverComponents } from './discover';
 vi.mock('node:fs', () => ({
   default: {
     readdirSync: vi.fn(),
-    existsSync: vi.fn(() => false),
   },
+}));
+
+vi.mock('node:module', () => ({
+  register: vi.fn(),
 }));
 
 function fileDirent(name: string): fs.Dirent {
