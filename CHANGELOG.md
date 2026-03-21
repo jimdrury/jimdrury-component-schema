@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.6...storyblok-component-schema-v0.5.0) (2026-03-21)
+
+
+### Features
+
+* add pluginCodeBlock field type ([#29](https://github.com/jimdrury/jimdrury-component-schema/issues/29)) ([4c96116](https://github.com/jimdrury/jimdrury-component-schema/commit/4c961165a4d2b436b9a47179e852314698a3f25f))
+
 ## [0.4.6](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.5...storyblok-component-schema-v0.4.6) (2026-03-21)
 
 
