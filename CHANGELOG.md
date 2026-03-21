@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.6](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.5...storyblok-component-schema-v0.4.6) (2026-03-21)
+
+
+### Bug Fixes
+
+* remove duplicate fs import in CLI entrypoint ([#27](https://github.com/jimdrury/jimdrury-component-schema/issues/27)) ([27ec089](https://github.com/jimdrury/jimdrury-component-schema/commit/27ec089795406e4fb4c058d30c3e715abcf546b8))
+* support schema-first discovery and extensionless imports ([#25](https://github.com/jimdrury/jimdrury-component-schema/issues/25)) ([ddd7a4e](https://github.com/jimdrury/jimdrury-component-schema/commit/ddd7a4ed10ba2a1b43764d2315c92ed4e36133ab))
+* support schema-first discovery and push lint checks ([#26](https://github.com/jimdrury/jimdrury-component-schema/issues/26)) ([cdb6732](https://github.com/jimdrury/jimdrury-component-schema/commit/cdb67325decf44d26d390d96807de88db3c34e78))
+
 ## [0.4.5](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.4...storyblok-component-schema-v0.4.5) (2026-03-20)
 
 
