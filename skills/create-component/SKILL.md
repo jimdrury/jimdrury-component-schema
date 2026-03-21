@@ -4,12 +4,12 @@ description: >-
   Create and configure Storyblok component definitions using the TypeScript
   schema DSL. Use when the user wants to add a new component, define fields,
   set up content types or nestable blocks, or work with files in the
-  components/ directory.
+  schema/ directory.
 ---
 
 # Create Component
 
-Define Storyblok components as TypeScript files in `components/`. Each file default-exports a call to `contentType()` or `nestable()` with a `schema` array of field types.
+Define Storyblok components as TypeScript files in `schema/`. Each file default-exports a call to `contentType()` or `nestable()` with a `schema` array of field types.
 
 ## Installation
 
@@ -50,7 +50,7 @@ yarn add @jimdrury/storyblok-component-schema
 Create a `.component-schema.yaml` in your project root:
 
 ```yaml
-componentsDir: ./components
+componentsDir: ./schema
 storyblok:
   apiToken: "${STORYBLOK_API_TOKEN}"
   spaceId: "${STORYBLOK_SPACE_ID}"
@@ -60,7 +60,7 @@ Values wrapped in `${...}` are resolved from environment variables at runtime. A
 
 ## Workflow
 
-1. Create `components/<name>.ts`
+1. Create `schema/<name>.ts`
 2. Import the component-type factory and field-type factories
 3. Default-export the component definition
 4. Run `npx storyblok-component-schema plan` to preview, `npx storyblok-component-schema apply` to push
@@ -272,7 +272,7 @@ export default contentType({
 
 When creating a component:
 
-- [ ] File is `components/<name>.ts` with a default export
+- [ ] File is `schema/<name>.ts` with a default export
 - [ ] `name` uses lowercase letters and underscores only
 - [ ] `display_name` is set to a human-readable label
 - [ ] All field `name` values are unique across the entire schema (including inside tabs)

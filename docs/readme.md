@@ -3,11 +3,11 @@
 Define Storyblok components as TypeScript code. Preview and apply changes with a Terraform-style workflow.
 
 ```
-components/blog.ts  -->  yarn plan   -->  review changes
-                    -->  yarn apply  -->  Storyblok
+schema/blog.ts  -->  yarn plan   -->  review changes
+                -->  yarn apply  -->  Storyblok
 ```
 
-Instead of clicking through the Storyblok UI to configure components, you write them as plain `.ts` files inside the `components/` directory. Each file exports a component definition built from two simple concepts:
+Instead of clicking through the Storyblok UI to configure components, you write them as plain `.ts` files inside the `schema/` directory. Each file exports a component definition built from two simple concepts:
 
 - **Component types** define _what kind_ of component it is (a content type or a nestable block).
 - **Field types** define _what data_ the component holds (text, images, links, etc.).
@@ -21,7 +21,7 @@ See [Setup](./setup.md) for installation, environment variables, and available c
 ## Project structure
 
 ```
-components/              Component definitions (one file per component)
+schema/                  Component definitions (one file per component)
 src/
   index.ts               Public barrel (re-exports everything)
   bin.ts                 CLI entry point (plan / apply commands)
@@ -33,7 +33,7 @@ src/
     plan.ts              Computes the diff between local and remote state
     apply.ts             Executes a plan against the Storyblok API
     format.ts            Terraform-style terminal output formatting
-    discover.ts          Auto-discovers components/*.ts at runtime
+    discover.ts          Auto-discovers schema/*.ts at runtime
     env.ts               Loads and validates environment variables
     payload.ts           Converts definitions to Storyblok API payloads
     api/                 Storyblok Management API client
