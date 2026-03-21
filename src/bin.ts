@@ -21,7 +21,6 @@ const originalEmit = process.emit;
 
 import fs from 'node:fs';
 import path from 'node:path';
-import fs from 'node:fs';
 import { Command } from 'commander';
 import { applyPlan } from './cli/apply';
 import { loadConfig } from './cli/config';
