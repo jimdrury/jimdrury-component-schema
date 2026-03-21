@@ -1,6 +1,6 @@
 {
   "name": "@jimdrury/storyblok-component-schema",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "description": "Terraform-style TypeScript DSL for managing Storyblok components as code",
   "keywords": [
     "storyblok",
