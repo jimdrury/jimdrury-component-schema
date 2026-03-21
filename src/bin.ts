@@ -19,6 +19,7 @@ const originalEmit = process.emit;
   ] as Parameters<typeof originalEmit>);
 };
 
+import fs from 'node:fs';
 import path from 'node:path';
 import fs from 'node:fs';
 import { Command } from 'commander';
