@@ -33,3 +33,5 @@ pre-push:
           echo ""
           exit 1
         fi
+    lint:
+      run: yarn lint
