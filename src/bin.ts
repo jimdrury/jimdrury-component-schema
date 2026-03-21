@@ -20,6 +20,7 @@ const originalEmit = process.emit;
 };
 
 import path from 'node:path';
+import fs from 'node:fs';
 import { Command } from 'commander';
 import { applyPlan } from './cli/apply';
 import { loadConfig } from './cli/config';
@@ -29,6 +30,22 @@ import { formatApplyResult, formatPlan } from './cli/format';
 import { computePlan } from './cli/plan';
 
 const program = new Command();
+
+function resolveComponentsDir(optsDir?: string, configDir?: string): string {
+  if (optsDir) {
+    return path.resolve(optsDir);
+  }
+  if (configDir) {
+    return path.resolve(configDir);
+  }
+
+  const schemaDir = path.resolve('./schema');
+  if (fs.existsSync(schemaDir)) {
+    return schemaDir;
+  }
+
+  return path.resolve('./components');
+}
 
 program
   .name('storyblok-component-schema')
@@ -42,9 +59,7 @@ program
   .action(async (opts: { dir?: string }) => {
     loadDotenv();
     const config = loadConfig();
-    const componentsDir = path.resolve(
-      opts.dir ?? config.componentsDir ?? './components',
-    );
+    const componentsDir = resolveComponentsDir(opts.dir, config.componentsDir);
     const api = loadEnv(config);
     const localComponents = await discoverComponents(componentsDir);
     console.log(`Discovered ${localComponents.length} local component(s)`);
@@ -61,9 +76,7 @@ program
   .action(async (opts: { dir?: string }) => {
     loadDotenv();
     const config = loadConfig();
-    const componentsDir = path.resolve(
-      opts.dir ?? config.componentsDir ?? './components',
-    );
+    const componentsDir = resolveComponentsDir(opts.dir, config.componentsDir);
     const api = loadEnv(config);
     const localComponents = await discoverComponents(componentsDir);
     console.log(`Discovered ${localComponents.length} local component(s)`);

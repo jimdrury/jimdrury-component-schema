@@ -32,11 +32,28 @@ function extractDefault(mod: Record<string, unknown>): ComponentDefinition {
   return value as ComponentDefinition;
 }
 
+function findNearestTsconfig(startDir: string): string | undefined {
+  let currentDir = path.resolve(startDir);
+  while (true) {
+    const candidate = path.join(currentDir, 'tsconfig.json');
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+
+    const parentDir = path.dirname(currentDir);
+    if (parentDir === currentDir) {
+      return undefined;
+    }
+    currentDir = parentDir;
+  }
+}
+
 export async function discoverComponents(
   componentsDir: string,
 ): Promise<ComponentDefinition[]> {
   const files = collectTsFiles(componentsDir);
   const components: ComponentDefinition[] = [];
+  const tsconfigPath = findNearestTsconfig(componentsDir);
   const parentURL = pathToFileURL(
     path.join(componentsDir, '_resolver.ts'),
   ).href;
@@ -44,7 +61,7 @@ export async function discoverComponents(
   for (const file of files) {
     const mod = await tsImport(file, {
       parentURL,
-      tsconfig: false,
+      tsconfig: tsconfigPath ?? false,
     });
     components.push(extractDefault(mod as Record<string, unknown>));
   }

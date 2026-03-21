@@ -58,7 +58,7 @@ export default contentType({
 Configure your project with a `.component-schema.yaml`:
 
 ```yaml
-componentsDir: ./components
+componentsDir: ./schema
 storyblok:
   apiToken: "${STORYBLOK_API_TOKEN}"
   spaceId: "${STORYBLOK_SPACE_ID}"

@@ -5,6 +5,7 @@ import { discoverComponents } from './discover';
 vi.mock('node:fs', () => ({
   default: {
     readdirSync: vi.fn(),
+    existsSync: vi.fn(() => false),
   },
 }));
 

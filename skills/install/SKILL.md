@@ -45,7 +45,7 @@ yarn add @jimdrury/storyblok-component-schema
 Create `.component-schema.yaml` in the project root:
 
 ```yaml
-componentsDir: ./components
+componentsDir: ./schema
 storyblok:
   apiToken: "${STORYBLOK_API_TOKEN}"
   spaceId: "${STORYBLOK_SPACE_ID}"
@@ -55,7 +55,7 @@ storyblok:
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `componentsDir` | `string` | `./components` | Path to the directory containing component `.ts` files. |
+| `componentsDir` | `string` | `./schema` | Path to the directory containing component `.ts` files. |
 | `storyblok.apiToken` | `string` | -- | Storyblok Management API token. Falls back to `STORYBLOK_API_TOKEN` env var. |
 | `storyblok.spaceId` | `string` | -- | Target Storyblok space ID. Falls back to `STORYBLOK_SPACE_ID` env var. |
 
@@ -115,7 +115,7 @@ Configuration is resolved with the following precedence (highest wins):
 1. **CLI flags** (`--dir`)
 2. **Config file** (`.component-schema.yaml`)
 3. **Environment variables** (`.env` / `.env.local`)
-4. **Defaults** (`componentsDir: ./components`)
+4. **Defaults** (`componentsDir: ./schema`, then `./components` if `./schema` does not exist)
 
 ## Checklist
 
