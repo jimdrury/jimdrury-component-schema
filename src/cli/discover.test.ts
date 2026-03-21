@@ -9,6 +9,10 @@ vi.mock('node:fs', () => ({
   },
 }));
 
+vi.mock('node:module', () => ({
+  register: vi.fn(),
+}));
+
 function fileDirent(name: string): fs.Dirent {
   return {
     name,

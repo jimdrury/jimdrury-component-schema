@@ -8,6 +8,7 @@ export * from './multilink';
 export * from './number';
 export * from './option';
 export * from './options';
+export * from './plugin-code-block';
 export * from './references';
 export * from './richtext';
 export * from './tab';

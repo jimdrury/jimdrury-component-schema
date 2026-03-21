@@ -96,6 +96,7 @@ Each field type maps directly to a Storyblok field. All fields share a set of [b
 | [tab](./field-type/tab.md) | `tab()` | `tab` | Group fields into editor tabs |
 | [table](./field-type/table.md) | `table()` | `table` | Editable table |
 | [references](./field-type/references.md) | `references()` | `options` | Story references (internal stories) |
+| [pluginCodeBlock](./field-type/plugin-code-block.md) | `pluginCodeBlock()` | `custom` | Code block (Storyblok Code Block plugin) |
 
 ---
 
