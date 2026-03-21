@@ -299,3 +299,20 @@ Story reference picker. Maps to Storyblok `options` with `source: "internal_stor
 import blog from './blog';
 references({ name: 'related', filter_content_type: [blog], entry_appearance: 'card' })
 ```
+
+---
+
+## pluginCodeBlock
+
+Code block with syntax highlighting (Storyblok Code Block plugin). Maps to `custom` type with `field_type: "storyblok-code-block"`.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `languages` | `string[]` | Available language options (e.g. `"tsx"`, `"json"`, `"css"`). |
+| `enable_title` | `boolean` | Show a title field above the code block. |
+| `enable_line_number_start` | `boolean` | Allow custom starting line number. |
+| `highlight_states` | `{ value, color }[]` | At least 2 `{ value, color }` entries. Omit to disable line highlighting. |
+
+```ts
+pluginCodeBlock({ name: 'code', enable_title: true, languages: ['tsx', 'json', 'css'] })
+```
