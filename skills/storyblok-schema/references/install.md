@@ -8,7 +8,10 @@ description: >-
 
 # Install
 
-Set up `@jimdrury/storyblok-component-schema` in a consuming project. This package is published to the GitHub Package Registry, not npm.
+Set up `@jimdrury/storyblok-component-schema` from the GitHub Package
+Registry. If the project already depends on the package (from the registry,
+a vendored archive, or a workspace link), keep its existing source and
+scripts unless the user asks to change them.
 
 ## 1. Configure the registry
 
@@ -53,11 +56,11 @@ storyblok:
 
 ### Fields
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `componentsDir` | `string` | `./schema` | Path to the directory containing component `.ts` files. |
-| `storyblok.apiToken` | `string` | -- | Storyblok Management API token. Falls back to `STORYBLOK_API_TOKEN` env var. |
-| `storyblok.spaceId` | `string` | -- | Target Storyblok space ID. Falls back to `STORYBLOK_SPACE_ID` env var. |
+| Field                | Type     | Default    | Description                                                                  |
+| -------------------- | -------- | ---------- | ---------------------------------------------------------------------------- |
+| `componentsDir`      | `string` | `./schema` | Path to the directory containing component `.ts` files.                      |
+| `storyblok.apiToken` | `string` | --         | Storyblok Management API token. Falls back to `STORYBLOK_API_TOKEN` env var. |
+| `storyblok.spaceId`  | `string` | --         | Target Storyblok space ID. Falls back to `STORYBLOK_SPACE_ID` env var.       |
 
 All fields are optional. The CLI falls back to environment variables and defaults.
 
@@ -100,7 +103,7 @@ In CI, use `actions/setup-node` to configure the registry:
 - uses: actions/setup-node@v6
   with:
     registry-url: https://npm.pkg.github.com
-    scope: '@jimdrury'
+    scope: "@jimdrury"
 - run: yarn install
   env:
     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

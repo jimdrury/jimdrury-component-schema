@@ -52,7 +52,7 @@ components/*.ts  →  discoverComponents()  →  computePlan()  →  applyPlan()
 
 `src/schema/component-type/` and `src/schema/field-type/` contain the public API used in `components/*.ts` files:
 
-- **`component-type/`** — `contentType()` and `nestable()` factory functions. Each validates params with Zod, then calls `buildSchema()` to convert the `schema` array into a keyed object (handling `tab()` grouping).
+- **`component-type/`** — `contentType()`, `nestable()`, and `universal()` factory functions. Each validates params with Zod, then calls `buildSchema()` to convert the `schema` array into a keyed object (handling `tab()` grouping).
 - **`field-type/`** — one file per Storyblok field type (`text`, `richtext`, `blocks`, `asset`, etc.). Each factory validates with its Zod schema and returns an object with `_name` (stripped before sending to the API) and `type` plus field-specific props.
 
 The `_name` internal property carries the field key through the type system; `buildSchema()` strips it and uses it as the object key.

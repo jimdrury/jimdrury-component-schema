@@ -18,8 +18,13 @@ import { contentType } from "@jimdrury/storyblok-component-schema";
 |-----------|------|----------|-------------|
 | `name` | `string` | yes | Unique machine name. Lowercase letters and underscores only. |
 | `display_name` | `string` | yes | Human-readable label shown in the Storyblok UI. |
+| `description` | `string` | no | Description shown to editors in the component picker. |
 | `image` | `string` (URL) | no | Preview image URL for the component picker. |
 | `preview_field` | `string` | no | Name of the field used as the preview title in the UI. |
+| `preview_tmpl` | `string` | no | Template for the block preview in the editor. |
+| `icon` | `string` | no | Icon shown in the component picker. |
+| `color` | `string` | no | Colour of the component picker icon (hex value). |
+| `content_type_asset_preview` | `string` | no | Name of an `asset` field shown as the story's preview image. Must name an `asset` field in `schema`. |
 | `folder` | `string` | no | Component group / folder path (e.g. `content`, `layout`). |
 | `tags` | `string[]` | no | Internal tags for filtering and block restrictions. |
 | `schema` | `FieldType[]` | yes | Array of field definitions. Field names must be unique. |
@@ -28,7 +33,7 @@ import { contentType } from "@jimdrury/storyblok-component-schema";
 
 ## Output
 
-Calling `contentType()` returns an object with `is_root: true`, which tells Storyblok this component can be used as a story root.
+Calling `contentType()` returns an object with `is_root: true` and `is_nestable: false`, which tells Storyblok this component can only be used as a story root, not as a nested block inside another component.
 
 ---
 
@@ -83,4 +88,5 @@ export default contentType({
 ## See also
 
 - [Nestable](./nestable.md) -- for reusable, embeddable blocks
+- [Universal](./universal.md) -- for root-level components that can also be embedded
 - [Field types](../readme.md#field-types) -- full list of available fields

@@ -7,7 +7,7 @@ description: >-
 
 # blocks
 
-Nested block field: editors add, reorder, and remove child components (nestable types).
+Nested block field: editors add, reorder, and remove child components (blok or universal components).
 
 ## Import
 

@@ -153,6 +153,151 @@ describe('computePlan', () => {
     expect(componentActions).toEqual([]);
   });
 
+  it('does not mark a component as update when remote settings are empty', async () => {
+    const api = createMockApi({
+      getComponents: vi.fn().mockResolvedValue({
+        data: {
+          components: [
+            {
+              name: 'hero',
+              id: 10,
+              schema: {},
+              is_root: false,
+              is_nestable: true,
+              description: null,
+              image: null,
+              preview_field: null,
+              preview_tmpl: null,
+              icon: null,
+              color: null,
+              content_type_asset_preview: null,
+              component_group_uuid: null,
+              internal_tag_ids: [],
+            },
+          ],
+        },
+      }),
+    });
+
+    const plan = await computePlan(api, [
+      makeComponent({
+        name: 'hero',
+        is_root: false,
+        is_nestable: true,
+      }),
+    ]);
+
+    expect(plan.actions).toEqual([]);
+  });
+
+  it('plans removal of settings that are set remotely but omitted locally', async () => {
+    const api = createMockApi({
+      getComponents: vi.fn().mockResolvedValue({
+        data: {
+          components: [
+            {
+              name: 'hero',
+              id: 10,
+              schema: {},
+              description: 'Hero banner.',
+              image: '//a.storyblok.com/hero.png',
+              preview_field: 'title',
+              preview_tmpl: '{{ it.title }}',
+              icon: 'block-image',
+              color: '#1b243f',
+              content_type_asset_preview: 'cover',
+              component_group_uuid: 'ui-uuid',
+              internal_tag_ids: [
+                '3',
+              ],
+            },
+          ],
+        },
+      }),
+      getComponentFolders: vi.fn().mockResolvedValue({
+        data: {
+          component_groups: [
+            {
+              id: 1,
+              name: 'ui',
+              uuid: 'ui-uuid',
+              parent_id: null,
+            },
+          ],
+        },
+      }),
+    });
+
+    const plan = await computePlan(api, [
+      makeComponent({
+        name: 'hero',
+      }),
+    ]);
+
+    const action = plan.actions.find(
+      (a) => a.resourceType === 'component' && a.name === 'hero',
+    );
+    expect(action?.action).toBe('update');
+    expect(action?.changes).toEqual([
+      {
+        path: 'description',
+        type: 'removed',
+        local: null,
+        remote: 'Hero banner.',
+      },
+      {
+        path: 'image',
+        type: 'removed',
+        local: null,
+        remote: '//a.storyblok.com/hero.png',
+      },
+      {
+        path: 'preview_field',
+        type: 'removed',
+        local: null,
+        remote: 'title',
+      },
+      {
+        path: 'preview_tmpl',
+        type: 'removed',
+        local: null,
+        remote: '{{ it.title }}',
+      },
+      {
+        path: 'icon',
+        type: 'removed',
+        local: null,
+        remote: 'block-image',
+      },
+      {
+        path: 'color',
+        type: 'removed',
+        local: null,
+        remote: '#1b243f',
+      },
+      {
+        path: 'content_type_asset_preview',
+        type: 'removed',
+        local: null,
+        remote: 'cover',
+      },
+      {
+        path: 'component_group_uuid',
+        type: 'removed',
+        local: null,
+        remote: 'ui-uuid',
+      },
+      {
+        path: 'internal_tag_ids',
+        type: 'changed',
+        local: [],
+        remote: [
+          3,
+        ],
+      },
+    ]);
+  });
+
   it('ignores Storyblok metadata like pos when comparing schema fields', async () => {
     const api = createMockApi({
       getComponents: vi.fn().mockResolvedValue({
@@ -722,6 +867,68 @@ describe('diffComponent', () => {
       local: 'new-uuid',
       remote: 'old-uuid',
     });
+  });
+
+  it('compares editor display settings', () => {
+    const desired = {
+      name: 'hero',
+      icon: 'block-image',
+      color: '#1b243f',
+      preview_tmpl: '{{ it.title }}',
+      content_type_asset_preview: 'cover',
+      schema: {},
+    };
+    const remote = {
+      name: 'hero',
+      id: 10,
+      icon: null,
+      color: '#000000',
+      preview_tmpl: '{{ it.name }}',
+      content_type_asset_preview: 'image',
+      schema: {},
+    };
+
+    expect(diffComponent(desired, remote)).toEqual([
+      {
+        path: 'preview_tmpl',
+        type: 'changed',
+        local: '{{ it.title }}',
+        remote: '{{ it.name }}',
+      },
+      {
+        path: 'icon',
+        type: 'added',
+        local: 'block-image',
+        remote: null,
+      },
+      {
+        path: 'color',
+        type: 'changed',
+        local: '#1b243f',
+        remote: '#000000',
+      },
+      {
+        path: 'content_type_asset_preview',
+        type: 'changed',
+        local: 'cover',
+        remote: 'image',
+      },
+    ]);
+  });
+
+  it('treats missing remote tag IDs as an empty list', () => {
+    const desired = {
+      name: 'hero',
+      internal_tag_ids: [],
+      schema: {},
+    };
+    const remote = {
+      name: 'hero',
+      id: 10,
+      schema: {},
+    };
+
+    expect(diffComponent(desired, remote)).toEqual([]);
   });
 
   it('normalizes string IDs from Storyblok to numbers before comparing', () => {

@@ -9,7 +9,7 @@ schema/blog.ts  -->  yarn plan   -->  review changes
 
 Instead of clicking through the Storyblok UI to configure components, you write them as plain `.ts` files inside the `schema/` directory. Each file exports a component definition built from two simple concepts:
 
-- **Component types** define _what kind_ of component it is (a content type or a nestable block).
+- **Component types** define _what kind_ of component it is (a content type, a nestable block, or a universal component that is both).
 - **Field types** define _what data_ the component holds (text, images, links, etc.).
 
 Every parameter is validated at build time with Zod and at the type level with TypeScript, so misconfigurations are caught before they ever reach the API.
@@ -26,7 +26,7 @@ src/
   index.ts               Public barrel (re-exports everything)
   bin.ts                 CLI entry point (plan / apply commands)
   schema/
-    component-type/      contentType() and nestable() factories
+    component-type/      contentType(), nestable(), and universal() factories
     field-type/          text(), blocks(), asset(), etc.
     component-definition.ts
   cli/
@@ -43,7 +43,7 @@ src/
 
 ## Defining a component
 
-A component file exports a default call to either `contentType()` or `nestable()`:
+A component file exports a default call to `contentType()`, `nestable()`, or `universal()`:
 
 ```ts
 import { contentType, text, richtext } from "@jimdrury/storyblok-component-schema";
@@ -71,6 +71,9 @@ Choose the right wrapper for each component:
 |------|---------|---------|
 | [Content Type](./component-type/content-type.md) | `contentType()` | Root-level entries: pages, articles, settings |
 | [Nestable](./component-type/nestable.md) | `nestable()` | Reusable blocks: grids, cards, heroes |
+| [Universal](./component-type/universal.md) | `universal()` | Both: entries that are also reused as blocks, such as FAQs |
+
+Each file is the full definition of its component. Any optional setting a file leaves out (such as `description`, `preview_field`, `icon`, `folder`, or `tags`) is cleared in Storyblok on `apply`, and settings changed in the Storyblok UI show up in `plan`.
 
 ---
 

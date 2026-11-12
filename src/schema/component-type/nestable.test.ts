@@ -99,6 +99,23 @@ describe('nestable', () => {
     expect(result.preview_field).toBe('title');
   });
 
+  it('includes editor display settings', () => {
+    const result = nestable({
+      name: 'card',
+      display_name: 'Card',
+      description: 'Shown to editors.',
+      icon: 'block-image',
+      color: '#1b243f',
+      preview_tmpl: '{{ it.title }}',
+      schema: [],
+    });
+
+    expect(result.description).toBe('Shown to editors.');
+    expect(result.icon).toBe('block-image');
+    expect(result.color).toBe('#1b243f');
+    expect(result.preview_tmpl).toBe('{{ it.title }}');
+  });
+
   it('rejects invalid names', () => {
     expect(() =>
       nestable({

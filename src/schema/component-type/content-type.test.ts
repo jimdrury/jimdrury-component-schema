@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { asset } from '../field-type/asset';
 import { richtext } from '../field-type/richtext';
 import { tab } from '../field-type/tab';
 import { text } from '../field-type/text';
@@ -29,16 +30,18 @@ describe('contentType', () => {
         },
       },
       is_root: true,
+      is_nestable: false,
     });
   });
 
-  it('sets is_root to true', () => {
+  it('sets is_root to true and is_nestable to false', () => {
     const result = contentType({
       name: 'page',
       display_name: 'Page',
       schema: [],
     });
     expect(result.is_root).toBe(true);
+    expect(result.is_nestable).toBe(false);
   });
 
   it('flattens schema array into a record keyed by _name', () => {
@@ -92,6 +95,76 @@ describe('contentType', () => {
     expect(result.tags).toEqual([
       'content',
     ]);
+  });
+
+  it('includes editor display settings', () => {
+    const result = contentType({
+      name: 'blog',
+      display_name: 'Blog',
+      description: 'Shown to editors.',
+      icon: 'block-doc',
+      color: '#00b3b0',
+      preview_tmpl: '{{ it.title }}',
+      content_type_asset_preview: 'cover',
+      schema: [
+        asset({
+          name: 'cover',
+        }),
+      ],
+    });
+
+    expect(result.description).toBe('Shown to editors.');
+    expect(result.icon).toBe('block-doc');
+    expect(result.color).toBe('#00b3b0');
+    expect(result.preview_tmpl).toBe('{{ it.title }}');
+    expect(result.content_type_asset_preview).toBe('cover');
+  });
+
+  it('accepts content_type_asset_preview naming an asset field inside a tab', () => {
+    const result = contentType({
+      name: 'blog',
+      display_name: 'Blog',
+      content_type_asset_preview: 'cover',
+      schema: [
+        tab({
+          name: 'media',
+          display_name: 'Media',
+          fields: [
+            asset({
+              name: 'cover',
+            }),
+          ],
+        }),
+      ],
+    });
+
+    expect(result.content_type_asset_preview).toBe('cover');
+  });
+
+  it('rejects content_type_asset_preview that does not name an asset field', () => {
+    expect(() =>
+      contentType({
+        name: 'blog',
+        display_name: 'Blog',
+        content_type_asset_preview: 'title',
+        schema: [
+          text({
+            name: 'title',
+          }),
+        ],
+      }),
+    ).toThrow('content_type_asset_preview "title" must name an asset field');
+  });
+
+  it('rejects content_type_asset_preview that names a missing field', () => {
+    expect(() =>
+      contentType({
+        name: 'blog',
+        display_name: 'Blog',
+        content_type_asset_preview: 'cover',
+        schema: [],
+      }),
+    ).toThrow('content_type_asset_preview "cover" must name an asset field');
   });
 
   it('rejects invalid names', () => {
