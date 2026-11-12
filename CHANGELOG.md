@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.6.0](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.5.0...storyblok-component-schema-v0.6.0) (2026-11-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* components built with contentType() are planned as is_nestable: false; use universal() for components that must stay nestable. Settings set in the Storyblok UI but missing from component files are now cleared on apply.
+
+### Features
+
+* add universal builder and manage all component settings ([#31](https://github.com/jimdrury/jimdrury-component-schema/issues/31)) ([35c1a43](https://github.com/jimdrury/jimdrury-component-schema/commit/35c1a435db2755ef67126a2296c277c2d3b547fd))
+
 ## [0.5.0](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.4.6...storyblok-component-schema-v0.5.0) (2026-03-21)
 
 
