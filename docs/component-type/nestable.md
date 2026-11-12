@@ -20,6 +20,9 @@ import { nestable } from "@jimdrury/storyblok-component-schema";
 | `display_name` | `string` | yes | Human-readable label shown in the Storyblok UI. |
 | `image` | `string` (URL) | no | Preview image URL for the component picker. |
 | `preview_field` | `string` | no | Name of the field used as the preview title in the UI. |
+| `preview_tmpl` | `string` | no | Template for the block preview in the editor. |
+| `icon` | `string` | no | Icon shown in the component picker. |
+| `color` | `string` | no | Colour of the component picker icon (hex value). |
 | `folder` | `string` | no | Component group / folder path (e.g. `layout`, `ui`). |
 | `tags` | `string[]` | no | Internal tags for filtering and block restrictions. |
 | `schema` | `FieldType[]` | yes | Array of field definitions. Field names must be unique. |
@@ -103,4 +106,5 @@ export default nestable({
 ## See also
 
 - [Content Type](./content-type.md) -- for root-level components
+- [Universal](./universal.md) -- for embeddable components that can also be a story root
 - [blocks](../field-type/blocks.md) -- the field type that embeds nestable components

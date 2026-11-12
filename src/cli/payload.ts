@@ -92,16 +92,24 @@ export function buildComponentPayload(
   folderPathToUuid: Map<string, string>,
   tagNameToId: Map<string, number>,
 ) {
-  const { folder, tags, ...componentData } = component;
-  const component_group_uuid = folder
-    ? folderPathToUuid.get(folder)
-    : undefined;
+  const {
+    folder,
+    tags,
+    image,
+    preview_field,
+    preview_tmpl,
+    icon,
+    color,
+    content_type_asset_preview,
+    ...componentData
+  } = component;
+  const component_group_uuid = folder ? folderPathToUuid.get(folder) : null;
   const schema = resolveSchemaRestrictions(
     componentData.schema ?? {},
     folderPathToUuid,
     tagNameToId,
   );
-  const internal_tag_ids = tags?.map((name) => {
+  const internal_tag_ids = (tags ?? []).map((name) => {
     const id = tagNameToId.get(name);
     if (!id) {
       throw new Error(`Unknown tag "${name}" on component "${component.name}"`);
@@ -112,11 +120,15 @@ export function buildComponentPayload(
   return {
     ...componentData,
     schema,
+    image: image ?? null,
+    preview_field: preview_field ?? null,
+    preview_tmpl: preview_tmpl ?? null,
+    icon: icon ?? null,
+    color: color ?? null,
+    content_type_asset_preview: content_type_asset_preview ?? null,
     ...(component_group_uuid !== undefined && {
       component_group_uuid,
     }),
-    ...(internal_tag_ids !== undefined && {
-      internal_tag_ids,
-    }),
+    internal_tag_ids,
   };
 }

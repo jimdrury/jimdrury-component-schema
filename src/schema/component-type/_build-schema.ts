@@ -38,3 +38,21 @@ export function buildSchema(entries: SchemaEntry[]): Record<string, unknown> {
 
   return schema;
 }
+
+export function assertAssetField(
+  schema: Record<string, unknown>,
+  fieldName: string | undefined,
+  label: string,
+): void {
+  if (fieldName === undefined) {
+    return;
+  }
+  const field = schema[fieldName] as
+    | {
+        type?: unknown;
+      }
+    | undefined;
+  if (field?.type !== 'asset') {
+    throw new Error(`${label} "${fieldName}" must name an asset field`);
+  }
+}

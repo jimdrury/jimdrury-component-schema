@@ -17,15 +17,15 @@ export const CreateComponentSchema = z.object({
   display_name: z.string().nullable().optional(),
   schema: ComponentSchemaFieldSchema.optional(),
   image: z.string().nullable().optional(),
-  preview_field: z.string().optional(),
+  preview_field: z.string().nullable().optional(),
   is_root: z.boolean().optional(),
-  preview_tmpl: z.string().optional(),
+  preview_tmpl: z.string().nullable().optional(),
   is_nestable: z.boolean().optional(),
-  component_group_uuid: z.string().optional(),
-  icon: z.string().optional(),
-  color: z.string().optional(),
+  component_group_uuid: z.string().nullable().optional(),
+  icon: z.string().nullable().optional(),
+  color: z.string().nullable().optional(),
   internal_tag_ids: z.array(z.number()).optional(),
-  content_type_asset_preview: z.string().optional(),
+  content_type_asset_preview: z.string().nullable().optional(),
 });
 
 export type CreateComponentParams = z.infer<typeof CreateComponentSchema>;
@@ -36,15 +36,15 @@ export const UpdateComponentSchema = z.object({
   display_name: z.string().nullable().optional(),
   schema: ComponentSchemaFieldSchema.optional(),
   image: z.string().nullable().optional(),
-  preview_field: z.string().optional(),
+  preview_field: z.string().nullable().optional(),
   is_root: z.boolean().optional(),
-  preview_tmpl: z.string().optional(),
+  preview_tmpl: z.string().nullable().optional(),
   is_nestable: z.boolean().optional(),
-  component_group_uuid: z.string().optional(),
-  icon: z.string().optional(),
-  color: z.string().optional(),
+  component_group_uuid: z.string().nullable().optional(),
+  icon: z.string().nullable().optional(),
+  color: z.string().nullable().optional(),
   internal_tag_ids: z.array(z.number()).optional(),
-  content_type_asset_preview: z.string().optional(),
+  content_type_asset_preview: z.string().nullable().optional(),
 });
 
 export type UpdateComponentParams = z.infer<typeof UpdateComponentSchema>;

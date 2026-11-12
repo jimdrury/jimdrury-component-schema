@@ -151,8 +151,8 @@ function toNumberArray(value: unknown): number[] | undefined {
 }
 
 function normalizeField(field: string, value: unknown): unknown {
-  if (NUMERIC_ARRAY_FIELDS.has(field) && Array.isArray(value)) {
-    return toNumberArray(value);
+  if (NUMERIC_ARRAY_FIELDS.has(field)) {
+    return Array.isArray(value) ? toNumberArray(value) : [];
   }
   return value;
 }
@@ -163,6 +163,10 @@ const MANAGED_FIELDS = [
   'is_nestable',
   'image',
   'preview_field',
+  'preview_tmpl',
+  'icon',
+  'color',
+  'content_type_asset_preview',
   'component_group_uuid',
   'internal_tag_ids',
 ] as const;
@@ -275,7 +279,12 @@ export function diffComponent(
     if (!deepEqual(localValue, remoteValue)) {
       changes.push({
         path: field,
-        type: remoteValue === undefined ? 'added' : 'changed',
+        type:
+          remoteValue == null
+            ? 'added'
+            : localValue == null
+              ? 'removed'
+              : 'changed',
         local: localValue,
         remote: remoteValue,
       });
