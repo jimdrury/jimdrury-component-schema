@@ -18,6 +18,7 @@ import { universal } from "@jimdrury/storyblok-component-schema";
 |-----------|------|----------|-------------|
 | `name` | `string` | yes | Unique machine name. Lowercase letters and underscores only. |
 | `display_name` | `string` | yes | Human-readable label shown in the Storyblok UI. |
+| `description` | `string` | no | Description shown to editors in the component picker. |
 | `image` | `string` (URL) | no | Preview image URL for the component picker. |
 | `preview_field` | `string` | no | Name of the field used as the preview title in the UI. |
 | `preview_tmpl` | `string` | no | Template for the block preview in the editor. |

@@ -84,7 +84,7 @@ For complete factory parameters across all field types, read [references/create-
   `nestable()` for a blok, `universal()` for a universal component.
 - Set `folder` to the file's directory under the components directory.
 - Treat the file as the full definition: `apply` clears any optional setting
-  (`image`, `preview_field`, `preview_tmpl`, `icon`, `color`,
+  (`description`, `image`, `preview_field`, `preview_tmpl`, `icon`, `color`,
   `content_type_asset_preview`, `folder`, `tags`) the file leaves out, and
   reverts settings changed in the Storyblok UI.
 - Use only one block restriction strategy per `blocks()` field.

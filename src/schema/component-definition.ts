@@ -1,6 +1,7 @@
 export type ComponentDefinition = {
   name: string;
   display_name?: string;
+  description?: string;
   schema: Record<string, unknown>;
   is_root?: boolean;
   is_nestable?: boolean;

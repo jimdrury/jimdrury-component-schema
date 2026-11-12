@@ -101,6 +101,7 @@ describe('contentType', () => {
     const result = contentType({
       name: 'blog',
       display_name: 'Blog',
+      description: 'Shown to editors.',
       icon: 'block-doc',
       color: '#00b3b0',
       preview_tmpl: '{{ it.title }}',
@@ -112,6 +113,7 @@ describe('contentType', () => {
       ],
     });
 
+    expect(result.description).toBe('Shown to editors.');
     expect(result.icon).toBe('block-doc');
     expect(result.color).toBe('#00b3b0');
     expect(result.preview_tmpl).toBe('{{ it.title }}');

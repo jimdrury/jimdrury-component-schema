@@ -94,6 +94,7 @@ describe('universal', () => {
     const result = universal({
       name: 'faq',
       display_name: 'FAQ',
+      description: 'Shown to editors.',
       icon: 'block-comment',
       color: '#ff5c00',
       preview_tmpl: '{{ it.question }}',
@@ -105,6 +106,7 @@ describe('universal', () => {
       ],
     });
 
+    expect(result.description).toBe('Shown to editors.');
     expect(result.icon).toBe('block-comment');
     expect(result.color).toBe('#ff5c00');
     expect(result.preview_tmpl).toBe('{{ it.question }}');

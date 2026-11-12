@@ -164,6 +164,7 @@ describe('computePlan', () => {
               schema: {},
               is_root: false,
               is_nestable: true,
+              description: null,
               image: null,
               preview_field: null,
               preview_tmpl: null,
@@ -198,6 +199,7 @@ describe('computePlan', () => {
               name: 'hero',
               id: 10,
               schema: {},
+              description: 'Hero banner.',
               image: '//a.storyblok.com/hero.png',
               preview_field: 'title',
               preview_tmpl: '{{ it.title }}',
@@ -237,6 +239,12 @@ describe('computePlan', () => {
     );
     expect(action?.action).toBe('update');
     expect(action?.changes).toEqual([
+      {
+        path: 'description',
+        type: 'removed',
+        local: null,
+        remote: 'Hero banner.',
+      },
       {
         path: 'image',
         type: 'removed',

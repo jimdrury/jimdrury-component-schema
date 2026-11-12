@@ -15,6 +15,7 @@ describe('buildComponentPayload', () => {
     expect(payload).toEqual({
       name: 'hero',
       schema: {},
+      description: null,
       image: null,
       preview_field: null,
       preview_tmpl: null,
@@ -31,6 +32,7 @@ describe('buildComponentPayload', () => {
       {
         name: 'blog',
         display_name: 'Blog',
+        description: 'A blog post.',
         is_root: true,
         is_nestable: false,
         image: 'https://example.com/blog.png',
@@ -65,6 +67,7 @@ describe('buildComponentPayload', () => {
       is_root: true,
       is_nestable: false,
       schema: {},
+      description: 'A blog post.',
       image: 'https://example.com/blog.png',
       preview_field: 'title',
       preview_tmpl: '{{ it.title }}',

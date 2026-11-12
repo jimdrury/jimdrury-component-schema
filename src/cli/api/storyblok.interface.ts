@@ -15,6 +15,7 @@ export const ComponentSchemaFieldSchema = z.record(z.string(), z.any());
 export const CreateComponentSchema = z.object({
   name: z.string(),
   display_name: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
   schema: ComponentSchemaFieldSchema.optional(),
   image: z.string().nullable().optional(),
   preview_field: z.string().nullable().optional(),
@@ -34,6 +35,7 @@ export const UpdateComponentSchema = z.object({
   id: z.number(),
   name: z.string().optional(),
   display_name: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
   schema: ComponentSchemaFieldSchema.optional(),
   image: z.string().nullable().optional(),
   preview_field: z.string().nullable().optional(),

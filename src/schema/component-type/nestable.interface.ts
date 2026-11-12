@@ -6,6 +6,7 @@ import type { AssertNoDuplicateNames } from './_common.interface';
 export const NestableParamsSchema = z.object({
   name: NameSchema,
   display_name: z.string(),
+  description: z.string().optional(),
   image: z.url().optional(),
   preview_field: z.string().optional(),
   preview_tmpl: z.string().optional(),
@@ -21,6 +22,7 @@ export type NestableParams<
 > = {
   name: string;
   display_name: string;
+  description?: string;
   image?: string;
   preview_field?: string;
   preview_tmpl?: string;

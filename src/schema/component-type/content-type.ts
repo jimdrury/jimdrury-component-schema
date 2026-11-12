@@ -19,6 +19,7 @@ export const contentType = <const Schema extends readonly SchemaEntry[]>(
   return {
     name: validatedParams.name,
     display_name: validatedParams.display_name,
+    description: validatedParams.description,
     image: validatedParams.image,
     preview_field: validatedParams.preview_field,
     preview_tmpl: validatedParams.preview_tmpl,

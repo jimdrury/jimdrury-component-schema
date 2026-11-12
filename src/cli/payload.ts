@@ -95,6 +95,7 @@ export function buildComponentPayload(
   const {
     folder,
     tags,
+    description,
     image,
     preview_field,
     preview_tmpl,
@@ -120,6 +121,7 @@ export function buildComponentPayload(
   return {
     ...componentData,
     schema,
+    description: description ?? null,
     image: image ?? null,
     preview_field: preview_field ?? null,
     preview_tmpl: preview_tmpl ?? null,

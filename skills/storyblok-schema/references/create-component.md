@@ -146,7 +146,8 @@ Returns `is_root: true, is_nestable: true`. Parameters are identical to `content
 
 ### Editor settings
 
-All three builders also accept `preview_tmpl`, `icon`, and `color`;
+All three builders also accept `description`, `preview_tmpl`, `icon`, and
+`color`;
 `contentType` and `universal` accept `content_type_asset_preview`, which must
 name an `asset` field in the schema. Any optional setting left out of the file
 is cleared in Storyblok on `apply`.

@@ -159,6 +159,7 @@ function normalizeField(field: string, value: unknown): unknown {
 
 const MANAGED_FIELDS = [
   'display_name',
+  'description',
   'is_root',
   'is_nestable',
   'image',

@@ -73,7 +73,7 @@ Choose the right wrapper for each component:
 | [Nestable](./component-type/nestable.md) | `nestable()` | Reusable blocks: grids, cards, heroes |
 | [Universal](./component-type/universal.md) | `universal()` | Both: entries that are also reused as blocks, such as FAQs |
 
-Each file is the full definition of its component. Any optional setting a file leaves out (such as `preview_field`, `icon`, `folder`, or `tags`) is cleared in Storyblok on `apply`, and settings changed in the Storyblok UI show up in `plan`.
+Each file is the full definition of its component. Any optional setting a file leaves out (such as `description`, `preview_field`, `icon`, `folder`, or `tags`) is cleared in Storyblok on `apply`, and settings changed in the Storyblok UI show up in `plan`.
 
 ---
 
