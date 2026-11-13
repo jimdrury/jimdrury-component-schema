@@ -143,6 +143,12 @@ const NUMERIC_ARRAY_FIELDS = new Set([
   'component_tag_denylist',
 ]);
 
+const EMPTY_ARRAY_FIELDS = new Set([
+  ...NUMERIC_ARRAY_FIELDS,
+  'component_whitelist',
+  'component_denylist',
+]);
+
 function toNumberArray(value: unknown): number[] | undefined {
   if (!Array.isArray(value)) {
     return undefined;
@@ -151,8 +157,11 @@ function toNumberArray(value: unknown): number[] | undefined {
 }
 
 function normalizeField(field: string, value: unknown): unknown {
+  if (EMPTY_ARRAY_FIELDS.has(field) && !Array.isArray(value)) {
+    return [];
+  }
   if (NUMERIC_ARRAY_FIELDS.has(field)) {
-    return Array.isArray(value) ? toNumberArray(value) : [];
+    return toNumberArray(value);
   }
   return value;
 }
