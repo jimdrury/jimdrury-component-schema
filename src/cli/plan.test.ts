@@ -983,6 +983,34 @@ describe('diffComponent', () => {
     expect(diffComponent(desired, remote)).toEqual([]);
   });
 
+  it('treats omitted empty component restriction lists as empty lists', () => {
+    const desired = {
+      name: 'page',
+      schema: {
+        content: {
+          type: 'bloks',
+          restrict_type: 'groups',
+          restrict_components: true,
+          component_whitelist: [],
+          component_denylist: [],
+        },
+      },
+    };
+    const remote = {
+      name: 'page',
+      id: 1,
+      schema: {
+        content: {
+          type: 'bloks',
+          restrict_type: 'groups',
+          restrict_components: true,
+        },
+      },
+    };
+
+    expect(diffComponent(desired, remote)).toEqual([]);
+  });
+
   it('skips fields not in the desired payload', () => {
     const desired = {
       name: 'hero',
