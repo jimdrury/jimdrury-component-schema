@@ -1,6 +1,6 @@
-import type { ComponentDefinition } from '../schema/component-definition';
-import type { StoryblokApi } from './api/storyblok';
-import { buildComponentPayload } from './payload';
+import type { ComponentDefinition } from "../schema/component-definition";
+import type { StoryblokApi } from "./api/storyblok";
+import { buildComponentPayload } from "./payload";
 
 type RemoteComponent = {
   name: string;
@@ -22,14 +22,14 @@ type RemoteTag = {
 
 export type FieldChange = {
   path: string;
-  type: 'added' | 'removed' | 'changed';
+  type: "added" | "removed" | "changed";
   local?: unknown;
   remote?: unknown;
 };
 
 export type PlanAction = {
-  action: 'create' | 'update' | 'delete';
-  resourceType: 'component' | 'folder' | 'tag';
+  action: "create" | "update" | "delete";
+  resourceType: "component" | "folder" | "tag";
   name: string;
   remoteId?: number;
   changes?: FieldChange[];
@@ -57,9 +57,7 @@ function buildFolderPathMaps(folders: RemoteFolder[]) {
   }
 
   function buildPath(folder: RemoteFolder): string {
-    const parts: string[] = [
-      folder.name,
-    ];
+    const parts: string[] = [folder.name];
     let current = folder;
     while (current.parent_id !== null) {
       const parent = idToFolder.get(current.parent_id);
@@ -69,7 +67,7 @@ function buildFolderPathMaps(folders: RemoteFolder[]) {
       parts.unshift(parent.name);
       current = parent;
     }
-    return parts.join('/');
+    return parts.join("/");
   }
 
   const pathToUuid = new Map<string, string>();
@@ -98,9 +96,9 @@ function getRequiredFolderPaths(
     if (!component.folder) {
       continue;
     }
-    const segments = component.folder.split('/');
+    const segments = component.folder.split("/");
     for (let i = 1; i <= segments.length; i++) {
-      paths.add(segments.slice(0, i).join('/'));
+      paths.add(segments.slice(0, i).join("/"));
     }
   }
   return paths;
@@ -116,10 +114,7 @@ function getRequiredTagNames(components: ComponentDefinition[]): Set<string> {
     }
     for (const field of Object.values(component.schema ?? {})) {
       const f = field as Record<string, unknown>;
-      for (const key of [
-        '_allowed_tags',
-        '_disallowed_tags',
-      ] as const) {
+      for (const key of ["_allowed_tags", "_disallowed_tags"] as const) {
         if (f[key]) {
           for (const tag of f[key] as string[]) {
             names.add(tag);
@@ -133,14 +128,18 @@ function getRequiredTagNames(components: ComponentDefinition[]): Set<string> {
 
 // --- Diff logic ---
 
-const SCHEMA_IGNORED_KEYS = new Set([
-  'pos',
-]);
+const SCHEMA_IGNORED_KEYS = new Set(["pos"]);
 
 const NUMERIC_ARRAY_FIELDS = new Set([
-  'internal_tag_ids',
-  'component_tag_whitelist',
-  'component_tag_denylist',
+  "internal_tag_ids",
+  "component_tag_whitelist",
+  "component_tag_denylist",
+]);
+
+const EMPTY_ARRAY_FIELDS = new Set([
+  ...NUMERIC_ARRAY_FIELDS,
+  "component_whitelist",
+  "component_denylist",
 ]);
 
 function toNumberArray(value: unknown): number[] | undefined {
@@ -151,25 +150,28 @@ function toNumberArray(value: unknown): number[] | undefined {
 }
 
 function normalizeField(field: string, value: unknown): unknown {
+  if (EMPTY_ARRAY_FIELDS.has(field) && !Array.isArray(value)) {
+    return [];
+  }
   if (NUMERIC_ARRAY_FIELDS.has(field)) {
-    return Array.isArray(value) ? toNumberArray(value) : [];
+    return toNumberArray(value);
   }
   return value;
 }
 
 const MANAGED_FIELDS = [
-  'display_name',
-  'description',
-  'is_root',
-  'is_nestable',
-  'image',
-  'preview_field',
-  'preview_tmpl',
-  'icon',
-  'color',
-  'content_type_asset_preview',
-  'component_group_uuid',
-  'internal_tag_ids',
+  "display_name",
+  "description",
+  "is_root",
+  "is_nestable",
+  "image",
+  "preview_field",
+  "preview_tmpl",
+  "icon",
+  "color",
+  "content_type_asset_preview",
+  "component_group_uuid",
+  "internal_tag_ids",
 ] as const;
 
 function deepEqual(a: unknown, b: unknown): boolean {
@@ -193,13 +195,10 @@ function deepEqual(a: unknown, b: unknown): boolean {
     return a.every((v, i) => deepEqual(v, b[i]));
   }
 
-  if (typeof a === 'object' && typeof b === 'object') {
+  if (typeof a === "object" && typeof b === "object") {
     const aObj = a as Record<string, unknown>;
     const bObj = b as Record<string, unknown>;
-    const keys = new Set([
-      ...Object.keys(aObj),
-      ...Object.keys(bObj),
-    ]);
+    const keys = new Set([...Object.keys(aObj), ...Object.keys(bObj)]);
     for (const key of keys) {
       if (!deepEqual(aObj[key], bObj[key])) {
         return false;
@@ -224,7 +223,7 @@ function diffSchemaFields(
     if (!remoteFields.has(name)) {
       changes.push({
         path: `schema.${name}`,
-        type: 'added',
+        type: "added",
       });
     }
   }
@@ -233,7 +232,7 @@ function diffSchemaFields(
     if (!localFields.has(name)) {
       changes.push({
         path: `schema.${name}`,
-        type: 'removed',
+        type: "removed",
       });
     }
   }
@@ -254,7 +253,7 @@ function diffSchemaFields(
       if (!deepEqual(localValue, remoteValue)) {
         changes.push({
           path: `schema.${name}.${prop}`,
-          type: 'changed',
+          type: "changed",
           local: localValue,
           remote: remoteValue,
         });
@@ -282,10 +281,10 @@ export function diffComponent(
         path: field,
         type:
           remoteValue == null
-            ? 'added'
+            ? "added"
             : localValue == null
-              ? 'removed'
-              : 'changed',
+              ? "removed"
+              : "changed",
         local: localValue,
         remote: remoteValue,
       });
@@ -299,13 +298,13 @@ export function diffComponent(
     changes.push(...diffSchemaFields(desiredSchema, remoteSchema));
   } else if (desiredSchema && !remoteSchema) {
     changes.push({
-      path: 'schema',
-      type: 'added',
+      path: "schema",
+      type: "added",
     });
   } else if (!desiredSchema && remoteSchema) {
     changes.push({
-      path: 'schema',
-      type: 'removed',
+      path: "schema",
+      type: "removed",
     });
   }
 
@@ -320,7 +319,7 @@ export async function computePlan(
     api.getComponents(),
     api.getComponentFolders(),
     api.getInternalTags({
-      by_object_type: 'component',
+      by_object_type: "component",
     }),
   ]);
 
@@ -341,14 +340,14 @@ export async function computePlan(
   // --- Folders ---
   const requiredFolders = getRequiredFolderPaths(localComponents);
 
-  const sortedRequired = [
-    ...requiredFolders,
-  ].sort((a, b) => a.split('/').length - b.split('/').length);
+  const sortedRequired = [...requiredFolders].sort(
+    (a, b) => a.split("/").length - b.split("/").length,
+  );
   for (const folderPath of sortedRequired) {
     if (!pathToUuid.has(folderPath)) {
       actions.push({
-        action: 'create',
-        resourceType: 'folder',
+        action: "create",
+        resourceType: "folder",
         name: folderPath,
       });
       pathToUuid.set(folderPath, `pending:${folderPath}`);
@@ -358,8 +357,8 @@ export async function computePlan(
   for (const [folderPath, folder] of pathToFolder) {
     if (!requiredFolders.has(folderPath)) {
       actions.push({
-        action: 'delete',
-        resourceType: 'folder',
+        action: "delete",
+        resourceType: "folder",
         name: folderPath,
         remoteId: folder.id,
       });
@@ -373,8 +372,8 @@ export async function computePlan(
   for (const name of requiredTags) {
     if (!tagNameToId.has(name)) {
       actions.push({
-        action: 'create',
-        resourceType: 'tag',
+        action: "create",
+        resourceType: "tag",
         name,
       });
       tagNameToId.set(name, pendingTagId--);
@@ -397,8 +396,8 @@ export async function computePlan(
 
       if (changes.length > 0) {
         actions.push({
-          action: 'update',
-          resourceType: 'component',
+          action: "update",
+          resourceType: "component",
           name: local.name,
           remoteId: remote.id,
           changes,
@@ -406,8 +405,8 @@ export async function computePlan(
       }
     } else {
       actions.push({
-        action: 'create',
-        resourceType: 'component',
+        action: "create",
+        resourceType: "component",
         name: local.name,
       });
     }
@@ -416,8 +415,8 @@ export async function computePlan(
   for (const remote of remoteComponents) {
     if (!localNames.has(remote.name)) {
       actions.push({
-        action: 'delete',
-        resourceType: 'component',
+        action: "delete",
+        resourceType: "component",
         name: remote.name,
         remoteId: remote.id,
       });
