@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.6.0...storyblok-component-schema-v0.6.1) (2026-11-13)
+
+
+### Bug Fixes
+
+* normalize empty component restrictions ([#33](https://github.com/jimdrury/jimdrury-component-schema/issues/33)) ([2834774](https://github.com/jimdrury/jimdrury-component-schema/commit/2834774f95d55faab9ed6e9a27865fc78ae0846b))
+
 ## [0.6.0](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.5.0...storyblok-component-schema-v0.6.0) (2026-11-12)
 
 
