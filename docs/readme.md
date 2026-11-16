@@ -113,5 +113,56 @@ Every field type accepts these common parameters:
 | `description` | `string` | no | Help text shown to editors. |
 | `tooltip` | `boolean` | no | Show the description as a tooltip instead of inline. |
 | `required` | `boolean` | no | Mark the field as required. |
+| `conditional_settings` | `ConditionalSetting[]` | no | Hide the field or change whether it is required, based on a sibling field. See [Conditional settings](#conditional-settings). |
 
 These are documented on each field type page as well, but only listed once here to keep things concise.
+
+---
+
+## Conditional settings
+
+`conditional_settings` hides a field, or changes whether it is required, based on the value of a sibling field. It uses Storyblok's own shape, so a rule saved in the editor can be copied into the schema file as-is.
+
+```ts
+number({
+    name: 'minutes',
+    conditional_settings: [
+        {
+            rule_match: 'any',
+            rule_conditions: [
+                {
+                    validated_object: {
+                        type: 'field',
+                        field_key: 'minutes_unlimited',
+                        field_attr: 'value',
+                    },
+                    validation: 'equals',
+                    value: true,
+                },
+            ],
+            modifications: [{ display: 'hide' }],
+        },
+    ],
+}),
+boolean({ name: 'minutes_unlimited' }),
+```
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `rule_match` | `'all' \| 'any'` | Whether every condition must match, or any one of them. |
+| `rule_conditions` | `RuleCondition[]` | At least one condition on a sibling field. |
+| `modifications` | `Modification[]` | At least one of `{ display: 'hide' \| 'hidden' }` or `{ required: boolean }`. |
+
+Each condition's `validation` decides its `value`:
+
+| `validation` | `value` |
+|--------------|---------|
+| `equals`, `not_equals` | A string, number, boolean, or asset object. |
+| `empty`, `not_empty` | Omitted or `null`. |
+| `gt`, `lt` | A number, or a `YYYY-MM-DD HH:mm` date string. |
+
+The component builder throws when `field_key` names an unknown field, a tab, or the field itself.
+
+The Storyblok editor writes and reads only the first setting and the first modification, so write one of each. The editor understands `display: 'hide'`, but the server's required check only recognizes `'hidden'`: a field with `required: true` and a `hide` rule is still required on save while it is hidden.
+
+`plan` always compares `conditional_settings`, including rules set only in Storyblok. A field without `conditional_settings` has no rules, so `apply` removes any rule added in the editor.

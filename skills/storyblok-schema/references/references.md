@@ -25,6 +25,7 @@ import { references } from '@jimdrury/storyblok-component-schema';
 | `description` | `string` | No | Help text in the editor. |
 | `tooltip` | `boolean` | No | Show as tooltip. |
 | `required` | `boolean` | No | Editors must pick at least one story (if applicable). |
+| `conditional_settings` | `ConditionalSetting[]` | No | Hide the field or change whether it is required, based on a sibling field. See [conditional-settings.md](conditional-settings.md). |
 
 ### Specific
 

@@ -1,6 +1,11 @@
 export * from './asset';
 export * from './blocks';
 export * from './boolean';
+export type {
+  ConditionalSetting,
+  Modification,
+  RuleCondition,
+} from './conditional-settings.interface';
 export * from './datetime';
 export * from './markdown';
 export * from './multiasset';

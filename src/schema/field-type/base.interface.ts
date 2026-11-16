@@ -1,17 +1,18 @@
 import z from 'zod';
+import {
+  type ConditionalSetting,
+  ConditionalSettingsSchema,
+} from './conditional-settings.interface';
+import { NameSchema } from './name.interface';
 
-export const NameSchema = z
-  .string()
-  .regex(
-    /^[a-z_]+$/,
-    'name must only contain lowercase letters and underscores',
-  );
+export { NameSchema };
 
 export const BaseFieldParamsSchema = z.object({
   name: NameSchema,
   description: z.string().optional(),
   tooltip: z.boolean().optional(),
   required: z.boolean().optional(),
+  conditional_settings: ConditionalSettingsSchema.optional(),
 });
 
 export const FieldTypeSchema = z
@@ -45,4 +46,5 @@ export type BaseField<N extends string = string> = {
   description?: string;
   tooltip?: boolean;
   required?: boolean;
+  conditional_settings?: ConditionalSetting[];
 };

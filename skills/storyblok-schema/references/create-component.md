@@ -154,7 +154,7 @@ is cleared in Storyblok on `apply`.
 
 ## Field Types Quick Reference
 
-Every field accepts base params: `name` (required), `description`, `tooltip`, `required`.
+Every field accepts base params: `name` (required), `description`, `tooltip`, `required`, `conditional_settings` (see [conditional-settings.md](conditional-settings.md)).
 
 | Factory      | Use for          | Key specific params                                                       |
 | ------------ | ---------------- | ------------------------------------------------------------------------- |

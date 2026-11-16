@@ -24,6 +24,7 @@ Only the shared base field parameters apply:
 | `description` | `string` | No | Help text in the editor. |
 | `tooltip` | `boolean` | No | Show as tooltip. |
 | `required` | `boolean` | No | Editors must fill the table. |
+| `conditional_settings` | `ConditionalSetting[]` | No | Hide the field or change whether it is required, based on a sibling field. See [conditional-settings.md](conditional-settings.md). |
 
 ## Examples
 
