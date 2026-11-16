@@ -23,6 +23,7 @@ import { boolean } from "@jimdrury/storyblok-component-schema";
 | `description`   | no       | `string`  | Help text shown in the editor.      |
 | `tooltip`       | no       | `boolean` | Show the description as a tooltip.  |
 | `required`      | no       | `boolean` | Whether the field is required.      |
+| `conditional_settings` | no | `ConditionalSetting[]` | Hide the field or change whether it is required, based on a sibling field. See [conditional-settings.md](conditional-settings.md). |
 | `default_value` | no       | `boolean` | Default on/off state.               |
 | `inline_label`  | no       | `boolean` | Show label inline with the control. |
 

@@ -792,6 +792,158 @@ describe('diffComponent', () => {
     });
   });
 
+  describe('conditional_settings', () => {
+    const hideWhenUnlimited = [
+      {
+        rule_match: 'any',
+        rule_conditions: [
+          {
+            validated_object: {
+              type: 'field',
+              field_key: 'minutes_unlimited',
+              field_attr: 'value',
+            },
+            validation: 'equals',
+            value: true,
+          },
+        ],
+        modifications: [
+          {
+            display: 'hide',
+          },
+        ],
+      },
+    ];
+
+    it('matches an identical remote rule regardless of key order', () => {
+      const desired = {
+        name: 'plan',
+        schema: {
+          minutes: {
+            type: 'number',
+            conditional_settings: hideWhenUnlimited,
+          },
+        },
+      };
+      const remote = {
+        name: 'plan',
+        id: 10,
+        schema: {
+          minutes: {
+            type: 'number',
+            id: 'abc',
+            conditional_settings: [
+              {
+                modifications: [
+                  {
+                    display: 'hide',
+                  },
+                ],
+                rule_match: 'any',
+                rule_conditions: [
+                  {
+                    validated_object: {
+                      type: 'field',
+                      field_key: 'minutes_unlimited',
+                      field_attr: 'value',
+                    },
+                    validation: 'equals',
+                    value: true,
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      };
+
+      expect(diffComponent(desired, remote)).toEqual([]);
+    });
+
+    it('reports a remote rule that the local field omits as removed', () => {
+      const desired = {
+        name: 'plan',
+        schema: {
+          minutes: {
+            type: 'number',
+          },
+        },
+      };
+      const remote = {
+        name: 'plan',
+        id: 10,
+        schema: {
+          minutes: {
+            type: 'number',
+            conditional_settings: hideWhenUnlimited,
+          },
+        },
+      };
+
+      expect(diffComponent(desired, remote)).toEqual([
+        {
+          path: 'schema.minutes.conditional_settings',
+          type: 'removed',
+          local: undefined,
+          remote: hideWhenUnlimited,
+        },
+      ]);
+    });
+
+    it('reports a local rule missing remotely as added', () => {
+      const desired = {
+        name: 'plan',
+        schema: {
+          minutes: {
+            type: 'number',
+            conditional_settings: hideWhenUnlimited,
+          },
+        },
+      };
+      const remote = {
+        name: 'plan',
+        id: 10,
+        schema: {
+          minutes: {
+            type: 'number',
+          },
+        },
+      };
+
+      expect(diffComponent(desired, remote)).toEqual([
+        {
+          path: 'schema.minutes.conditional_settings',
+          type: 'added',
+          local: hideWhenUnlimited,
+          remote: undefined,
+        },
+      ]);
+    });
+
+    it('treats an empty remote list as no rules', () => {
+      const desired = {
+        name: 'plan',
+        schema: {
+          minutes: {
+            type: 'number',
+          },
+        },
+      };
+      const remote = {
+        name: 'plan',
+        id: 10,
+        schema: {
+          minutes: {
+            type: 'number',
+            conditional_settings: [],
+          },
+        },
+      };
+
+      expect(diffComponent(desired, remote)).toEqual([]);
+    });
+  });
+
   it('ignores pos in remote schema fields', () => {
     const desired = {
       name: 'hero',

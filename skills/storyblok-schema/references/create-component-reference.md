@@ -10,6 +10,7 @@ Complete parameter reference for every field type factory. All factories are imp
 | `description` | `string` | no | Help text shown to editors. |
 | `tooltip` | `boolean` | no | Show description as tooltip instead of inline. |
 | `required` | `boolean` | no | Mark field as required. |
+| `conditional_settings` | `ConditionalSetting[]` | no | Hide the field or change whether it is required, based on a sibling field. See [conditional-settings.md](conditional-settings.md). |
 
 ---
 

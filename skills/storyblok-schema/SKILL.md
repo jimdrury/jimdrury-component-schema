@@ -74,6 +74,7 @@ For complete factory parameters across all field types, read [references/create-
 - Group editor fields in a tab: [references/tab.md](references/tab.md)
 - Editable spreadsheet-like data: [references/table.md](references/table.md)
 - Storyblok Code Block plugin field: [references/plugincodeblock.md](references/plugincodeblock.md)
+- Hide a field, or change whether it is required, based on another field: [references/conditional-settings.md](references/conditional-settings.md)
 
 ## Guardrails
 
@@ -86,6 +87,8 @@ For complete factory parameters across all field types, read [references/create-
 - Treat the file as the full definition: `apply` clears any optional setting
   (`description`, `image`, `preview_field`, `preview_tmpl`, `icon`, `color`,
   `content_type_asset_preview`, `folder`, `tags`) the file leaves out, and
-  reverts settings changed in the Storyblok UI.
+  reverts settings changed in the Storyblok UI. This includes field
+  `conditional_settings`: copy rules made in the editor into the file before
+  applying.
 - Use only one block restriction strategy per `blocks()` field.
 - Prefer `plan` before an `apply`. Treat an `apply` as an external write.

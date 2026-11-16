@@ -1,3 +1,4 @@
+import type { BaseField } from '../field-type/base.interface';
 import type {
   AnyFieldType,
   SchemaEntry,
@@ -36,7 +37,35 @@ export function buildSchema(entries: SchemaEntry[]): Record<string, unknown> {
     }
   }
 
+  assertConditionalFields(schema);
+
   return schema;
+}
+
+function assertConditionalFields(schema: Record<string, unknown>): void {
+  for (const [fieldName, value] of Object.entries(schema)) {
+    const settings = (value as Partial<BaseField>).conditional_settings;
+    for (const setting of settings ?? []) {
+      for (const condition of setting.rule_conditions) {
+        const { field_key } = condition.validated_object;
+        const target = schema[field_key] as
+          | {
+              type?: unknown;
+            }
+          | undefined;
+        if (field_key === fieldName) {
+          throw new Error(
+            `Field "${fieldName}" has a conditional setting that depends on itself`,
+          );
+        }
+        if (target === undefined || target.type === 'tab') {
+          throw new Error(
+            `Field "${fieldName}" has a conditional setting on unknown field "${field_key}"`,
+          );
+        }
+      }
+    }
+  }
 }
 
 export function assertAssetField(

@@ -22,6 +22,7 @@ import { markdown } from "@jimdrury/storyblok-component-schema";
 | `description` | `string` | no | Help text shown to editors. |
 | `tooltip` | `boolean` | no | Show the description as a tooltip. |
 | `required` | `boolean` | no | Mark the field as required. |
+| `conditional_settings` | `ConditionalSetting[]` | no | Hide the field or change whether it is required, based on a sibling field. See [Conditional settings](../readme.md#conditional-settings). |
 
 ### Specific
 

@@ -137,6 +137,14 @@ const SCHEMA_IGNORED_KEYS = new Set([
   'pos',
 ]);
 
+const SCHEMA_MANAGED_KEYS = new Set([
+  'conditional_settings',
+]);
+
+function emptyArrayToUndefined(value: unknown): unknown {
+  return Array.isArray(value) && value.length === 0 ? undefined : value;
+}
+
 const NUMERIC_ARRAY_FIELDS = new Set([
   'internal_tag_ids',
   'component_tag_whitelist',
@@ -259,11 +267,32 @@ function diffSchemaFields(
       if (SCHEMA_IGNORED_KEYS.has(prop)) {
         continue;
       }
+      if (SCHEMA_MANAGED_KEYS.has(prop)) {
+        continue;
+      }
       const remoteValue = normalizeField(prop, remoteField[prop]);
       if (!deepEqual(localValue, remoteValue)) {
         changes.push({
           path: `schema.${name}.${prop}`,
           type: 'changed',
+          local: localValue,
+          remote: remoteValue,
+        });
+      }
+    }
+
+    for (const prop of SCHEMA_MANAGED_KEYS) {
+      const localValue = emptyArrayToUndefined(localField[prop]);
+      const remoteValue = emptyArrayToUndefined(remoteField[prop]);
+      if (!deepEqual(localValue, remoteValue)) {
+        changes.push({
+          path: `schema.${name}.${prop}`,
+          type:
+            remoteValue == null
+              ? 'added'
+              : localValue == null
+                ? 'removed'
+                : 'changed',
           local: localValue,
           remote: remoteValue,
         });
