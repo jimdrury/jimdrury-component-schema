@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.6.1...storyblok-component-schema-v0.7.0) (2026-11-16)
+
+
+### Features
+
+* support conditional_settings on every field ([#35](https://github.com/jimdrury/jimdrury-component-schema/issues/35)) ([d936b23](https://github.com/jimdrury/jimdrury-component-schema/commit/d936b2389d84dc22a6e0ce49723dcc3c919d2386))
+
 ## [0.6.1](https://github.com/jimdrury/jimdrury-component-schema/compare/storyblok-component-schema-v0.6.0...storyblok-component-schema-v0.6.1) (2026-11-13)
 
 
